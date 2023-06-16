@@ -1,0 +1,6 @@
+a random place from overcooked will be chosen at the start
+there will be ingredient bins, and stations shown on the module.
+there will be 3 random orders to turn in (in order)
+it will take time for stations to do their thing
+once some stations are done they will make a sound
+some statiosn will require immediate attention less a strike will ensue.
