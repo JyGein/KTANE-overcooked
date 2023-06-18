@@ -5,6 +5,8 @@ using UnityEngine;
 public abstract class Station {
     public abstract string[] Interact(string[] hands);
     public abstract void updoot();
+    public abstract void startup();
     public float timer = 0;
     public string[] slot = new string[0];
+    public int Image;
 }
