@@ -1,0 +1,10 @@
+{
+  "name": "Overcooked-Editor",
+  "references": [
+    "Overcooked"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": []
+}

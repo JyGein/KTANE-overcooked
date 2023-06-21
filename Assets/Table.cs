@@ -1,7 +1,11 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
 using UnityEngine;
-using System;
+using KModkit;
+using Rnd = UnityEngine.Random;
 
 public class Table : Station {
     public Table(Overcooked module, int number) { _module = module; _number = number; }
@@ -10,16 +14,17 @@ public class Table : Station {
     public new string[] slot = new string[0];
     public new int Image = 0;
     public override void startup() {
+        updateText();
         _module.stations[_number].transform.Find("stationImage").transform.GetComponent<MeshRenderer>().material = _module.stationMaterials[Image];
     }
     public override string[] Interact(string[] hands) {
         string[] temp = new string[slot.Length + hands.Length];
         string[] temp2 = new string[4];
         if(slot.Length == 0 && hands.Length == 0) {
-            _module.log("Holding nothing and nothing on the cutting board");
+            _module.log("Holding nothing and nothing on the counter");
             return hands;
         }
-            if(slot.Length + hands.Length > 4) { _module.log($"No space on the Counter."); return hands; }
+        if(slot.Length + hands.Length > 4) { _module.log($"No space on the Counter."); return hands; }
         if(hands.Length == 0) {
             for(int i = 0; i < 4; i++) {
                 try {
@@ -36,6 +41,14 @@ public class Table : Station {
             timer = 0;
             return temp;
         }
+        if(slot.Length != 0) { 
+            foreach(string i in hands.Concat(slot).ToArray()) {
+                if(_module.uncombinable.Contains(i)) {
+                    _module.log($"{i} is uncombinable");
+                    return hands;
+                }
+            }
+        }
         for(int i=0; i<4; i++) {
             try {
                 temp2[i] = hands[i];
@@ -43,8 +56,6 @@ public class Table : Station {
                 temp2[i] = "";
             }
         }
-        //{ "what ever i pick up" }
-        //{ "what ever i pick up", "help2", "help2", "help2" }
         _module.log($"Put {temp2[0] + temp2[1] + temp2[2] + temp2[3]} on the counter.");
         for(int i = 0; i < slot.Length; i++) {
             temp[i] = slot[i];
@@ -57,6 +68,11 @@ public class Table : Station {
         return new string[0];
     }
     public override void updoot() {
+        MeshRenderer currentMesh = _module.stations[_number].transform.Find("progressBar").transform.GetComponent<MeshRenderer>();
+        if(timer > 0 && timer < 15) {
+            currentMesh.enabled = true;
+            _module.stations[_number].transform.Find("progressBar").transform.GetComponent<MeshRenderer>().material.SetTextureOffset("_MainTex", new Vector2(0, timer / 30));
+        } else { currentMesh.enabled = false; }
     }
     public void updateText() {
         //_module.stations[_number].transform.Find("stationText").transform.GetComponent<TextMesh>().text = string.Join(" ", slot);

@@ -21,6 +21,7 @@ public class Overcooked : MonoBehaviour {
     public Transform[] orderDisplays;
     public Transform handsDisplay;
     public Material[] stationMaterials;
+    public Transform moduleMaterial;
 
     static int ModuleIdCounter = 1;
     int ModuleId;
@@ -28,18 +29,33 @@ public class Overcooked : MonoBehaviour {
     bool ModuleSolved2;
 
     string[] hands = new string[0];
-    private Place sushi;
+    private Place sushi0;
+    private Place sushi1;
+    private Place sky0;
+    private Place sky1;
+    private Place sky2;
+    private Place rapids0;
+    private Place mines0;
+    private Place mines1;
+    private Place magic0;
+    private Place magic1;
+    private Place magic2;
+    private Place magic3;
+    private Place martian0;
     private Place[] places;
     public Place place;
     private string[][] orders;
     private int submitted = 0;
-    private readonly string[][] allOrders = new string[][] { new string[] { "cutFish" }, new string[] { "cutShrimp" } };
-    public readonly string[] allIngredients = new string[] { "fish", "shrimp", "cucumber", "rice", "seaweed", "cutFish", "cutShrimp", "cutCucumber", "cookedRice" };
+    private readonly string[][] allOrders = new string[][] { new string[] { "cutFish" }, new string[] { "cutShrimp" }, new string[] { "seaweed", "cookedRice", "cutFish" }, new string[] { "seaweed", "cookedRice", "cutCucumber" }, new string[] { "seaweed", "cookedRice", "cutFish", "cutCucumber" }, new string[] { "cookedPasta", "cookedBeef" }, new string[] { "cookedPasta", "cookedMushroom" }, new string[] { "cookedPasta", "cookedTomato" }, new string[] { "cookedPasta", "cookedFish", "cookedShrimp" }, new string[] { "cutLettuce" }, new string[] { "cutLettuce", "cutTomato" }, new string[] { "cutLettuce", "cutTomato", "cutCucumber" }, new string[] { "friedPotato" }, new string[] { "friedChicken" }, new string[] { "friedPotato", "friedChicken" }, new string[] { "cookedRice", "tortilla", "cookedMushroom" }, new string[] { "cookedRice", "tortilla", "cookedBeef" }, new string[] { "cookedRice", "tortilla", "cookedChicken" }, new string[] { "bun", "cookedBeef" }, new string[] { "bun", "cookedBeef", "cutCheese" }, new string[] { "bun", "cookedBeef", "cutLettuce", "cutCheese" }, new string[] { "bun", "cookedBeef", "cutLettuce", "cutTomato" }, new string[] { "cookedDough", "cookedCheese", "cookedTomato" }, new string[] { "cookedDough", "cookedCheese", "cookedTomato", "cookedPepperoni" }, new string[] { "cookedDough", "cookedCheese", "cookedTomato", "cookedChicken" }, new string[] { "cookedDough", "cookedCheese", "cookedTomato", "cookedOlive" }, new string[] { "cookedFlour", "cookedEgg" }, new string[] { "cookedFlour", "cookedEgg", "cookedChocolate" }, new string[] { "cookedFlour", "cookedEgg", "cookedStrawberry" }, new string[] { "cookedFlour", "cookedEgg", "cookedBlueberry" }, new string[] { "cookedFlour", "cookedEgg", "cookedHoney" }, new string[] { "cookedFlour", "cookedEgg", "cookedHoney", "cookedChocolate" }, new string[] { "cookedFlour", "cookedEgg", "cookedHoney", "cookedCarrot" } };
+    public readonly string[] allIngredients = new string[] { "fish", "shrimp", "cucumber", "rice", "seaweed", "cutFish", "cutShrimp", "cutCucumber", "cookedRice", "pasta", "mushroom", "beef", "tomato", "cutTomato", "cutBeef", "cutMushroom", "cookedFish", "cookedShrimp", "cookedMushroom", "cookedBeef", "cookedTomato", "cookedPasta", "lettuce", "cutLettuce", "tortilla", "potato", "chicken", "cutPotato", "cutChicken", "friedPotato", "friedChicken", "cookedChicken", "bun", "cheese", "cutCheese", "dough", "cutDough", "cookedDough", "pepperoni", "cutPepperoni", "cookedCheese", "cookedPepperoni", "flour", "egg", "mixedFlour", "mixedEgg", "chocolate", "blueberry", "strawberry", "cutChocolate", "cutBlueberry", "cutStrawberry", "mixedChocolate", "mixedBlueberry", "mixedStrawberry", "cookedFlour", "cookedEgg", "cookedChocolate", "cookedBlueberry", "cookedStrawberry", "honey", "carrot", "cutHoney", "cutCarrot", "mixedHoney", "mixedCarrot", "cookedHoney", "cookedCarrot" };
+    private string beep = "overcooked-beep-(1) (mp3cut.net)(1)";
+    public float minutesTime;
+    public readonly string[] uncombinable = new string[] { "cookedDough", "fish", "shrimp", "cucumber", "rice", "pasta", "mushroom", "beef", "tomato", "cutBeef", "cutMushroom", "lettuce", "potato", "chicken", "cutPotato", "cutChicken", "cheese", "dough", "pepperoni", "flour", "egg", "mixedFlour", "mixedEgg", "chocolate", "blueberry", "strawberry", "mixedChocolate", "mixedBlueberry", "mixedStrawberry", "cookedFlour", "cookedEgg", "cookedChocolate", "cookedBlueberry", "cookedStrawberry", "honey", "carrot", "mixedHoney", "mixedCarrot", "cookedHoney", "cookedCarrot" };
+    public bool TPStrikeTimer;
 
     void Awake () {
         ModuleId = ModuleIdCounter++; 
         GetComponent<KMBombModule>().OnActivate += Activate;
-        sushi = new Place(new Box[] { new Box(this, 0, "fish"), new Box(this, 1, "shrimp"), new Box(this, 2, "cucumber"), new Box(this, 3, "rice"), new Box(this, 4, "seaweed") }, new Station[] { new Cutting(this, 0), new Cutting(this, 1), new Table(this, 2), new Table(this, 3) }, new string[][] { new string[] { "cutFish" }, new string[] { "cutShrimp" } }, 7);
         /*
         foreach (KMSelectable object in keypad) {
             object.OnInteract += delegate () { keypadPress(object); return false; };
@@ -59,11 +75,81 @@ public class Overcooked : MonoBehaviour {
     }
 
     void Start () { //Shit
-        places = new Place[] { sushi }; 
-        place = places[0];
+        minutesTime = Bomb.GetTime() / 60;
+        float calcTime = minutesTime / 2 * 7 >= 45 ? 45 : minutesTime / 2 * 7;
+        sushi0 = new Place(
+            new Box[] { new Box(this, 0, "lettuce"), new Box(this, 1, "tomato"), new Box(this, 2, "cucumber"), new Box(this, 3, "fish"), new Box(this, 4, "shrimp"), new Box(this, 5, "rice"), new Box(this, 6, "seaweed") },
+            new Station[] { new Cutting(this, 0), new Cutting(this, 1), new Pot(this, 2), new Pot(this, 3), new Table(this, 4), new Table(this, 5) }, 
+            new string[][] { new string[] { "cutFish" }, new string[] { "cutShrimp" }, new string[] { "seaweed", "cookedRice", "cutFish" }, new string[] { "seaweed", "cookedRice", "cutCucumber" }, new string[] { "seaweed", "cookedRice", "cutFish", "cutCucumber" }, new string[] { "cutFish" }, new string[] { "cutShrimp" }, new string[] { "seaweed", "cookedRice", "cutFish" }, new string[] { "seaweed", "cookedRice", "cutCucumber" }, new string[] { "seaweed", "cookedRice", "cutFish", "cutCucumber" }, new string[] { "cutLettuce" }, new string[] { "cutLettuce", "cutTomato" }, new string[] { "cutLettuce", "cutTomato", "cutCucumber" } }, 
+            2.5f);
+        sushi1 = new Place(
+            new Box[] { new Box(this, 0, "bun"), new Box(this, 1, "beef"), new Box(this, 2, "cucumber"), new Box(this, 3, "fish"), new Box(this, 4, "shrimp"), new Box(this, 5, "rice"), new Box(this, 6, "seaweed") }, 
+            new Station[] { new Cutting(this, 0), new Cutting(this, 1), new Pot(this, 2), new Pot(this, 3), new Table(this, 4), new Table(this, 5), new Pan(this, 6), new Pan(this, 7) }, 
+            new string[][] { new string[] { "cutFish" }, new string[] { "cutShrimp" }, new string[] { "seaweed", "cookedRice", "cutFish" }, new string[] { "seaweed", "cookedRice", "cutCucumber" }, new string[] { "seaweed", "cookedRice", "cutFish", "cutCucumber" }, new string[] { "bun", "cookedBeef" }, }, 
+            2.5f);
+        sky0 = new Place(
+            new Box[] { new Box(this, 0, "lettuce"), new Box(this, 1, "tomato"), new Box(this, 2, "cucumber"), new Box(this, 3, "mushroom"), new Box(this, 4, "beef"), new Box(this, 5, "fish"), new Box(this, 6, "shrimp"), new Box(this, 7, "pasta") }, 
+            new Station[] { new Cutting(this, 0), new Cutting(this, 1), new Pan(this, 2), new Pan(this, 3), new Pot(this, 4), new Pot(this, 5), new Table(this, 6), new Table(this, 7) }, 
+            new string[][] { new string[] { "cookedPasta", "cookedBeef" }, new string[] { "cookedPasta", "cookedMushroom" }, new string[] { "cookedPasta", "cookedTomato" }, new string[] { "cookedPasta", "cookedFish", "cookedShrimp" }, new string[] { "cookedPasta", "cookedBeef" }, new string[] { "cookedPasta", "cookedMushroom" }, new string[] { "cookedPasta", "cookedTomato" }, new string[] { "cookedPasta", "cookedFish", "cookedShrimp" }, new string[] { "cutLettuce" }, new string[] { "cutLettuce", "cutTomato" }, new string[] { "cutLettuce", "cutTomato", "cutCucumber" } }, 
+            3);
+        sky1 = new Place(
+            new Box[] { new Box(this, 0, "bun"), new Box(this, 1, "cheese"), new Box(this, 2, "lettuce"), new Box(this, 3, "mushroom"), new Box(this, 4, "beef"), new Box(this, 5, "fish"), new Box(this, 6, "shrimp"), new Box(this, 7, "pasta"), new Box(this, 8, "tomato") }, 
+            new Station[] { new Cutting(this, 0), new Cutting(this, 1), new Pan(this, 2), new Pan(this, 3), new Pot(this, 4), new Pot(this, 5), new Table(this, 6), new Table(this, 7) }, 
+            new string[][] { new string[] { "cookedPasta", "cookedBeef" }, new string[] { "cookedPasta", "cookedMushroom" }, new string[] { "cookedPasta", "cookedTomato" }, new string[] { "cookedPasta", "cookedFish", "cookedShrimp" }, new string[] { "bun", "cookedBeef" }, new string[] { "bun", "cookedBeef", "cutCheese" }, new string[] { "bun", "cookedBeef", "cutLettuce", "cutCheese" }, new string[] { "bun", "cookedBeef", "cutLettuce", "cutTomato" } }, 
+            3.5f);
+        sky2 = new Place(
+            new Box[] { new Box(this, 0, "bun"), new Box(this, 1, "cheese"), new Box(this, 2, "lettuce"), new Box(this, 3, "beef"), new Box(this, 4, "tomato")},
+            new Station[] { new Cutting(this, 0), new Cutting(this, 1), new Pan(this, 2), new Pan(this, 3), new Table(this, 4), new Table(this, 5) }, 
+            new string[][] { new string[] { "bun", "cookedBeef" }, new string[] { "bun", "cookedBeef", "cutCheese" }, new string[] { "bun", "cookedBeef", "cutLettuce", "cutCheese" }, new string[] { "bun", "cookedBeef", "cutLettuce", "cutTomato" } }, 
+            2.5f);
+        rapids0 = new Place(
+            new Box[] { new Box(this, 0, "potato"), new Box(this, 1, "chicken") }, 
+            new Station[] { new Cutting(this, 0), new Cutting(this, 1), new Fryer(this, 2), new Fryer(this, 3), new Table(this, 4), new Table(this, 5) }, 
+            new string[][] { new string[] { "friedPotato" }, new string[] { "friedChicken" }, new string[] { "friedPotato", "friedChicken" } }, 
+            2.5f);
+        mines0 = new Place(
+            new Box[] { new Box(this, 0, "tortilla"), new Box(this, 1, "chicken"), new Box(this, 2, "beef"), new Box(this, 3, "mushroom"), new Box(this, 4, "rice") },
+            new Station[] { new Cutting(this, 0), new Cutting(this, 1), new Pan(this, 2), new Pan(this, 3), new Pot(this, 4), new Pot(this, 5), new Table(this, 6), new Table(this, 7) },
+            new string[][] { new string[] { "cookedRice", "tortilla", "cookedMushroom" }, new string[] { "cookedRice", "tortilla", "cookedBeef" }, new string[] { "cookedRice", "tortilla", "cookedChicken" } },
+            2.5f);
+        mines1 = new Place(
+            new Box[] { new Box(this, 0, "bun"), new Box(this, 1, "cheese"), new Box(this, 2, "beef") },
+            new Station[] { new Cutting(this, 0), new Cutting(this, 1), new Pan(this, 2), new Pan(this, 3), new Table(this, 4), new Table(this, 5) },
+            new string[][] { new string[] { "bun", "cookedBeef" }, new string[] { "bun", "cookedBeef", "cutCheese" } },
+            2f);
+        magic0 = new Place(
+            new Box[] { new Box(this, 0, "dough"), new Box(this, 1, "cheese"), new Box(this, 2, "tomato") },
+            new Station[] { new Cutting(this, 0), new Cutting(this, 1), new Cutting(this, 2), new Oven(this, 3), new Oven(this, 4), new Table(this, 5), new Table(this, 6) },
+            new string[][] { new string[] { "cookedDough", "cookedCheese", "cookedTomato" } },
+            2.5f);
+        magic1 = new Place(
+            new Box[] { new Box(this, 0, "dough"), new Box(this, 1, "cheese"), new Box(this, 2, "tomato"), new Box(this, 3, "pepperoni") },
+            new Station[] { new Cutting(this, 0), new Cutting(this, 1), new Cutting(this, 2), new Oven(this, 3), new Oven(this, 4), new Table(this, 5), new Table(this, 6) },
+            new string[][] { new string[] { "cookedDough", "cookedCheese", "cookedTomato" }, new string[] { "cookedDough", "cookedCheese", "cookedTomato", "cookedPepperoni" } },
+            3f);
+        magic2 = new Place(
+            new Box[] { new Box(this, 0, "flour"), new Box(this, 1, "egg"), new Box(this, 2, "chocolate") },
+            new Station[] { new Cutting(this, 0), new Cutting(this, 1), new Mixer(this, 2), new Mixer(this, 3), new PanP(this, 4), new PanP(this, 5), new Table(this, 6), new Table(this, 7) },
+            new string[][] { new string[] { "cookedFlour", "cookedEgg" }, new string[] { "cookedFlour", "cookedEgg", "cookedChocolate" } },
+            3f);
+        magic3 = new Place(
+            new Box[] { new Box(this, 0, "flour"), new Box(this, 1, "egg"), new Box(this, 2, "chocolate"), new Box(this, 3, "strawberry"), new Box(this, 4, "blueberry") },
+            new Station[] { new Cutting(this, 0), new Cutting(this, 1), new Mixer(this, 2), new Mixer(this, 3), new PanP(this, 4), new PanP(this, 5), new Table(this, 6), new Table(this, 7) },
+            new string[][] { new string[] { "cookedFlour", "cookedEgg" }, new string[] { "cookedFlour", "cookedEgg", "cookedChocolate" }, new string[] { "cookedFlour", "cookedEgg", "cookedStrawberry" }, new string[] { "cookedFlour", "cookedEgg", "cookedBlueberry" } },
+            3.5f);
+        martian0 = new Place(
+            new Box[] { new Box(this, 0, "flour"), new Box(this, 1, "egg"), new Box(this, 2, "honey"), new Box(this, 3, "chocolate"), new Box(this, 4, "carrot") },
+            new Station[] { new Cutting(this, 0), new Cutting(this, 1), new Mixer(this, 2), new Mixer(this, 3), new OvenC(this, 4), new OvenC(this, 5), new Table(this, 6), new Table(this, 7) },
+            new string[][] { new string[] { "cookedFlour", "cookedEgg", "cookedHoney" }, new string[] { "cookedFlour", "cookedEgg", "cookedHoney", "cookedChocolate" }, new string[] { "cookedFlour", "cookedEgg", "cookedHoney", "cookedCarrot" } },
+            4f);
+        Color[] colors = { Color.green, Color.green, Color.cyan, Color.cyan, Color.cyan, Color.blue, Color.yellow, Color.yellow, Color.magenta, Color.magenta, Color.magenta, Color.magenta, Color.red };
+        places = new Place[] { sushi0, sushi1, sky0, sky1, sky2, rapids0, mines0, mines1, magic0, magic1, magic2, magic3, martian0 };
+        int randPlace = Rnd.Range(0, places.Length);
+        place = places[randPlace];
+        moduleMaterial.GetComponent<MeshRenderer>().material.SetColor("_Color", colors[randPlace]);
         hands = new string[0];
-        orders = new string[place.OrderAmount][];
-        for(int i=0; i<place.OrderAmount; i++) {
+        orders = new string[Mathf.FloorToInt(calcTime/place.OrderAmount) < 1 ? 1 : Mathf.FloorToInt(calcTime / place.OrderAmount)][];
+        for(int i=0; i<(Mathf.FloorToInt(calcTime / place.OrderAmount) < 1 ? 1 : Mathf.FloorToInt(calcTime / place.OrderAmount)); i++) {
             orders[i] = place.Orders[Rnd.Range(0, place.Orders.Length)];
         }
         for(int i=0; i<3; i++) {
@@ -86,42 +172,62 @@ public class Overcooked : MonoBehaviour {
         /*log(string.Join(" ", place.Ingredients));
         log(place.Stations[0].ToString());
         log(string.Join(" ", place.Orders));*/
-        for(int i = 0; i < place.Ingredients.Length; i++) {
-            int dummy = i;
-            ingredientBoxes[i].transform.GetComponent<MeshRenderer>().enabled = true;
-            //ingredientBoxes[i].transform.Find("ingredientText").transform.GetComponent<TextMesh>().text = place.Ingredients[i]._type;
-            place.Ingredients[i].startup();
-            ingredientBoxes[i].OnInteract += delegate () { ingredientPress(ingredientBoxes[dummy], place.Ingredients[dummy]); return false; };
-
-        }
-        trash.OnInteract += delegate () { if(ModuleSolved) { return false; } trash.AddInteractionPunch(); Audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, trash.transform); hands = new string[0]; log("Selected Trash, Emptied Hands."); return false; };
-        for(int i = 0; i < place.Stations.Length; i++) {
-            int dummy = i;
-            stations[i].transform.GetComponent<MeshRenderer>().enabled = true;
-            stations[i].transform.Find("stationImage").transform.GetComponent<MeshRenderer>().enabled = true;
-            place.Stations[i].startup();
-            stations[i].OnInteract += delegate () { stationPress(stations[dummy], place.Stations[dummy]); return false; };
-        }
-        output.OnInteract += delegate () { if(ModuleSolved) { return false; } trash.AddInteractionPunch(); Audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, trash.transform); outputCheck(); return false; };
-        foreach(string[] i in orders) {
-            foreach(string f in i) {
-                log(f);
+        for(int i = 0; i < 9; i++) {
+            try {
+                int dummy = i;
+                ingredientBoxes[i].gameObject.SetActive(true);
+                ingredientBoxes[i].transform.GetComponent<MeshRenderer>().enabled = true;
+                place.Ingredients[i].startup();
+                ingredientBoxes[i].OnInteract = delegate () { ingredientPress(ingredientBoxes[dummy], place.Ingredients[dummy]); return false; };
+            } catch {
+                ingredientBoxes[i].gameObject.SetActive(false);
+                ingredientBoxes[i].OnInteract = delegate () { return false; };
             }
         }
-    }
+        trash.OnInteract += delegate () { if(ModuleSolved) { return false; } trash.AddInteractionPunch(); Audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, trash.transform); hands = new string[0]; log("Selected Trash, Emptied Hands."); return false; };
+        for(int i = 0; i < 8; i++) {
+            try {
+                int dummy = i;
+                stations[i].gameObject.SetActive(true);
+                stations[i].transform.GetComponent<MeshRenderer>().enabled = true;
+                stations[i].transform.Find("stationImage").transform.GetComponent<MeshRenderer>().enabled = true;
+                place.Stations[i].startup();
+                stations[i].OnInteract = delegate () { stationPress(stations[dummy], place.Stations[dummy]); return false; };
+            } catch {
+                stations[i].gameObject.SetActive(false);
+                stations[i].OnInteract = delegate () { return false; };
+            }
+        }
+        output.OnInteract = delegate () { if(ModuleSolved) { return false; } trash.AddInteractionPunch(); Audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, output.transform); outputCheck(); return false; };
 
+    }
+    
     void outputCheck() {
+        bool[] checki = new bool[orders[submitted].Length];
         foreach(string food in hands) {
-            if(Array.IndexOf(orders[submitted], food) == -1) {
+            string[] validFoods = orders[submitted].Where((o, index) => o == food && checki[index] == false).ToArray();
+            if(!validFoods.Any()) {
+                Strike($"Incorrect! Submitted {arrayToString(hands)} when supposed to submit {arrayToString(orders[submitted])}");
                 hands = new string[0];
-                Strike("Incorrect!");
+                return;
+            }
+            if(checki[Array.IndexOf(orders[submitted], food)] == true) {
+                checki[Array.IndexOf(orders[submitted], food, Array.IndexOf(orders[submitted], food))] = true;
+            } else {
+                checki[Array.IndexOf(orders[submitted], food)] = true;
+            }
+        }
+        foreach(bool i in checki) {
+            if(!i) {
+                Strike($"Incorrect! Submitted {arrayToString(hands)} when supposed to submit {arrayToString(orders[submitted])}");
+                hands = new string[0];
                 return;
             }
         }
         hands = new string[0];
         submitted++;
         log($"Order#{submitted} Complete");
-        if(submitted==place.OrderAmount) {
+        if(submitted==orders.Length) {
             Solve();
         }
         for(int i = 0+submitted; i < 3+submitted; i++) {
@@ -158,6 +264,35 @@ public class Overcooked : MonoBehaviour {
         station.AddInteractionPunch();
         Audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, station.transform);
         hands = type.Interact(hands);
+    }
+
+    public int findInArrayArray(string[][] uncooked, string[] slot) {
+        int temp2 = -1;
+        int count = 0;
+        foreach(string[] order in uncooked) {
+            bool check = false;
+            if(order.Length != slot.Length) { check = true; }
+            foreach(string food in slot) {
+                if(Array.IndexOf(order, food) == -1) { check = true; }
+            }
+            if(!check) {
+                temp2 = count;
+            }
+            count++;
+        }
+        return temp2;
+    }
+
+    public string arrayToString(string[] f) {
+        string temp = "";
+        foreach(string i in f) {
+            temp += f;
+        }
+        return temp;
+    }
+
+    public void Beep(KMSelectable station) {
+        Audio.PlaySoundAtTransform(beep, station.transform);
     }
 
     void Update () { //Shit that happens at any point after initialization
@@ -215,6 +350,7 @@ public class Overcooked : MonoBehaviour {
     public void Strike (string reason) {
         GetComponent<KMBombModule>().HandleStrike();
         Debug.LogFormat("[Overcooked #{0}] {1} Strike Issued.", ModuleId, reason);
+        Start();
     }
 
 #pragma warning disable 414
@@ -222,6 +358,7 @@ public class Overcooked : MonoBehaviour {
 #pragma warning restore 414
 
     KMSelectable[] ProcessTwitchCommand (string Command) {
+        TPStrikeTimer = true;
         return null;
     }
 

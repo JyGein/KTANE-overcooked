@@ -1,18 +1,23 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
 using UnityEngine;
-using System;
+using KModkit;
+using Rnd = UnityEngine.Random;
 
 public class Cutting : Station {
     public Cutting(Overcooked module, int number) { _module = module; _number = number; }
     private Overcooked _module;
     private int _number;
-    readonly string[] uncut = { "fish", "shrimp", "cucumber", "rice" };
-    readonly string[] cut = { "cutFish", "cutShrimp", "cutCucumber", "cookedRice" };
+    readonly string[] uncut = { "fish", "shrimp", "cucumber", "mushroom", "tomato", "beef", "lettuce", "potato", "chicken", "cheese", "dough", "pepperoni", "chocolate", "blueberry", "strawberry", "honey", "carrot" };
+    readonly string[] cut = { "cutFish", "cutShrimp", "cutCucumber", "cutMushroom", "cutTomato", "cutBeef", "cutLettuce", "cutPotato", "cutChicken", "cutCheese", "cutDough", "cutPepperoni", "cutChocolate", "cutBlueberry", "cutStrawberry", "cutHoney", "cutCarrot" };
     public new string[] slot = new string[0];
     public new int Image = 1;
     public new float timer = 0;
     public override void startup() {
+        updateText();
         _module.stations[_number].transform.Find("stationImage").transform.GetComponent<MeshRenderer>().material = _module.stationMaterials[Image];
     }
     public void updateText() {
@@ -33,6 +38,7 @@ public class Cutting : Station {
         }
     }
     public override string[] Interact(string[] hands) {
+        string[] temp;
         if(slot.Length == 0 && hands.Length == 1) {
             if(Array.IndexOf(uncut, hands[0]) != -1) {
                 slot = hands;
@@ -56,8 +62,26 @@ public class Cutting : Station {
             _module.log("Hands are full");
             return hands;
         }
+        if(hands.Length == 0) {
+            _module.log($"Took {slot[0]} off the cutter.");
+            temp = new string[hands.Length + 1];
+            for(int i = 0; i < hands.Length; i++) {
+                temp[i] = hands[i];
+            }
+            temp[hands.Length] = slot[0];
+            slot = new string[0];
+            updateText();
+            timer = 0;
+            return temp;
+        }
+        foreach(string i in hands.Concat(slot).ToArray()) {
+            if(_module.uncombinable.Contains(i)) {
+                _module.log($"{i} is uncombinable");
+                return hands;
+            }
+        }
         _module.log($"Took {slot[0]} off the cutter.");
-        string[] temp = new string[hands.Length + 1];
+        temp = new string[hands.Length + 1];
         for(int i = 0; i < hands.Length; i++) {
             temp[i] = hands[i];
         }
