@@ -7,14 +7,14 @@ using UnityEngine;
 using KModkit;
 using Rnd = UnityEngine.Random;
 
-public class Mixer : Station {
-    public Mixer(Overcooked module, int number) { _module = module; _number = number; }
+public class Steamer : Station {
+    public Steamer(Overcooked module, int number) { _module = module; _number = number; }
     private Overcooked _module;
     private int _number;
-    string[] unmixed = { "flour", "egg", "cutChocolate", "cutBlueberry", "cutStrawberry", "cutHoney", "cutCarrot", "cutShrimp", "cutBeef" };
-    string[] mixed = { "mixedFlour", "mixedEgg", "mixedChocolate", "mixedBlueberry", "mixedStrawberry", "mixedHoney", "mixedCarrot", "mixedShrimp", "mixedBeef" };
+    string[] uncooked = { "mixedFlour", "mixedCarrot", "mixedBeef", "mixedShrimp", "cutFish" };
+    string[] cooked = { "cookedFlour", "cookedCarrot", "cookedBeef", "cookedShrimp", "cookedFish" };
     public new string[] slot = new string[0];
-    public new int Image = 6;
+    public new int Image = 7;
     public new float timer = 0;
     private int burning = 0;
     public override void startup() {
@@ -75,21 +75,19 @@ public class Mixer : Station {
         string[] temp = new string[slot.Length + hands.Length];
         string temp2 = "";
         if(slot.Length == 0 && hands.Length == 0) {
-            _module.log("Holding nothing and nothing in the mixer.");
+            _module.log("Holding nothing and nothing in the Steamer.");
             return hands;
         }
-        if(slot.Length + hands.Length > 4) { _module.log($"No space in the mixer."); return hands; }
-        foreach(string i in hands) {
-            if(!unmixed.Contains(i) && !mixed.Contains(i)) {
-                _module.log($"{i} can't go in the mixer.");
-                return hands;
-            }
+        if(slot.Length + hands.Length > 4) { _module.log($"No space in the Steamer."); return hands; }
+        if(hands.Length > 0 && slot.Length > 0) {
+            _module.log($"Holding somthing and somthing in the Steamer.");
+            return hands;
         }
         if(hands.Length == 0) {
             foreach(string i in slot) {
                 temp2 += i;
             }
-            _module.log($"Took {temp2} out of the mixer.");
+            _module.log($"Took {temp2} out of the Steamer.");
             temp = slot;
             slot = new string[0];
             updateText();
@@ -98,30 +96,24 @@ public class Mixer : Station {
             return temp;
         }
         foreach(string i in hands) {
+            if(!uncooked.Contains(i)) {
+                _module.log($"{i} can't go in the Steamer.");
+                return hands;
+            }
+        }
+        foreach(string i in hands) {
             temp2 += i;
         }
-        _module.log($"Put {temp2} in the mixer.");
-        if(timer >= 15) {
-            timer = 15 / ((float)Math.Pow(2, hands.Length));
-        } else {
-        timer = timer / ((float)Math.Pow(2, hands.Length));
-        }
+        _module.log($"Put {temp2} in the Steamer.");
+        timer = 0;
         burning = 0;
         slot = slot.Concat(hands).ToArray();
         updateText();
         return new string[0];
     }
     public override void updoot() {
-        try {
-            if(timer < 15 * slot.Where(i => mixed.Contains(i)).ToArray().Length / slot.Length && slot.Length > 0) {
-                timer = 15 * slot.Where(i => mixed.Contains(i)).ToArray().Length / slot.Length;
-            }
-        } catch { }
         string temp2;
-        if(slot.Length > 0 && timer <= 15) {
-            timer += Time.deltaTime/slot.Length;
-        }
-        if(slot.Length > 0 && timer >= 15) {
+        if(slot.Length > 0) {
             timer += Time.deltaTime;
         }
         if(timer >= 15 && burning == 0) {
@@ -129,10 +121,10 @@ public class Mixer : Station {
             foreach(string i in slot) {
                 temp2 += i;
             }
-            _module.log($"{temp2} is done mixing");
+            _module.log($"{temp2} is done cooking");
             for(int i = 0; i < slot.Length; i++) {
                 try {
-                    slot[i] = mixed[Array.IndexOf(unmixed, slot[i])];
+                    slot[i] = cooked[Array.IndexOf(uncooked, slot[i])];
                 } catch {}
             }
             updateText();
@@ -149,7 +141,7 @@ public class Mixer : Station {
             foreach(string i in slot) {
                 temp2 += i;
             }
-            _module.Strike($"{temp2} broke the mixer.");
+            _module.Strike($"{temp2} burned in the Steamer.");
         }
         MeshRenderer currentMesh = _module.stations[_number].transform.Find("progressBar").transform.GetComponent<MeshRenderer>();
         if(timer > 0 && timer < 15) {
