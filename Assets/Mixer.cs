@@ -113,18 +113,18 @@ public class Mixer : Station {
     }
     public override void updoot() {
         try {
-            if(timer < 15 * slot.Where(i => mixed.Contains(i)).ToArray().Length / slot.Length && slot.Length > 0) {
-                timer = 15 * slot.Where(i => mixed.Contains(i)).ToArray().Length / slot.Length;
+            if(timer < 10 * slot.Where(i => mixed.Contains(i)).ToArray().Length / slot.Length && slot.Length > 0) {
+                timer = 10 * slot.Where(i => mixed.Contains(i)).ToArray().Length / slot.Length;
             }
         } catch { }
         string temp2;
-        if(slot.Length > 0 && timer <= 15) {
+        if(slot.Length > 0 && timer <= 10) {
             timer += Time.deltaTime/slot.Length;
         }
-        if(slot.Length > 0 && timer >= 15) {
+        if(slot.Length > 0 && timer >= 10) {
             timer += Time.deltaTime;
         }
-        if(timer >= 15 && burning == 0) {
+        if(timer >= 10 && burning == 0) {
             temp2 = "";
             foreach(string i in slot) {
                 temp2 += i;

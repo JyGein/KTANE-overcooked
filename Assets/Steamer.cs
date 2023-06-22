@@ -12,7 +12,7 @@ public class Steamer : Station {
     private Overcooked _module;
     private int _number;
     string[] uncooked = { "mixedFlour", "mixedCarrot", "mixedBeef", "mixedShrimp", "cutFish" };
-    string[] cooked = { "cookedFlour", "cookedCarrot", "cookedBeef", "cookedShrimp", "cookedFish" };
+    string[] cooked = { "steamedFlour", "steamedCarrot", "steamedBeef", "steamedShrimp", "steamedFish" };
     public new string[] slot = new string[0];
     public new int Image = 7;
     public new float timer = 0;

@@ -12,7 +12,7 @@ public class Oven : Station {
     private Overcooked _module;
     private int _number;
     string[] uncooked = { "cutDough", "cutCheese", "cutTomato", "cutPepperoni", "cutChicken", "cutOlive" };
-    string[] cooked = { "cookedDough", "cookedCheese", "cookedTomato", "cookedPepperoni", "cookedChicken", "cookedOlive" };
+    string[] cooked = { "bakedDough", "bakedCheese", "bakedTomato", "bakedPepperoni", "bakedChicken", "bakedOlive" };
     public new string[] slot = new string[0];
     public new int Image = 5;
     public new float timer = 0;
@@ -104,8 +104,8 @@ public class Oven : Station {
             burning = 0;
             return temp;
         }
-        if(slot.Contains("cookedDough")) {
-            _module.log("Cannot combine cookedDough.");
+        if(slot.Contains("bakedDough")) {
+            _module.log("Cannot combine bakedDough.");
             return hands;
             //cannot cum
             //projectile dysfunction???

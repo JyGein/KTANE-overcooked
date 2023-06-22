@@ -12,7 +12,7 @@ public class OvenC : Station {
     private Overcooked _module;
     private int _number;
     string[] uncooked = { "mixedFlour", "mixedEgg", "mixedChocolate", "mixedHoney", "mixedCarrot" };
-    string[] cooked = { "cookedFlour", "cookedEgg", "cookedChocolate", "cookedHoney", "cookedCarrot" };
+    string[] cooked = { "bakedFlour", "bakedEgg", "bakedChocolate", "bakedHoney", "bakedCarrot" };
     public new string[] slot = new string[0];
     public new int Image = 5;
     public new float timer = 0;

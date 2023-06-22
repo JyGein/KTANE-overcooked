@@ -11,6 +11,9 @@ public class Overcooked : MonoBehaviour {
 
     public KMBombInfo Bomb;
     public KMAudio Audio;
+    static int ModuleIdCounter = 1;
+    int ModuleId;
+
     public KMSelectable trash;
     public KMSelectable[] stations;
     public KMSelectable output;
@@ -23,8 +26,6 @@ public class Overcooked : MonoBehaviour {
     public Material[] stationMaterials;
     public Transform moduleMaterial;
 
-    static int ModuleIdCounter = 1;
-    int ModuleId;
     bool ModuleSolved;
     bool ModuleSolved2;
 
@@ -47,11 +48,11 @@ public class Overcooked : MonoBehaviour {
     public Place place;
     private string[][] orders;
     private int submitted = 0;
-    private readonly string[][] allOrders = new string[][] { new string[] { "cutFish" }, new string[] { "cutShrimp" }, new string[] { "seaweed", "cookedRice", "cutFish" }, new string[] { "seaweed", "cookedRice", "cutCucumber" }, new string[] { "seaweed", "cookedRice", "cutFish", "cutCucumber" }, new string[] { "cookedPasta", "cookedBeef" }, new string[] { "cookedPasta", "cookedMushroom" }, new string[] { "cookedPasta", "cookedTomato" }, new string[] { "cookedPasta", "cookedFish", "cookedShrimp" }, new string[] { "cutLettuce" }, new string[] { "cutLettuce", "cutTomato" }, new string[] { "cutLettuce", "cutTomato", "cutCucumber" }, new string[] { "friedPotato" }, new string[] { "friedChicken" }, new string[] { "friedPotato", "friedChicken" }, new string[] { "cookedRice", "tortilla", "cookedMushroom" }, new string[] { "cookedRice", "tortilla", "cookedBeef" }, new string[] { "cookedRice", "tortilla", "cookedChicken" }, new string[] { "bun", "cookedBeef" }, new string[] { "bun", "cookedBeef", "cutCheese" }, new string[] { "bun", "cookedBeef", "cutLettuce", "cutCheese" }, new string[] { "bun", "cookedBeef", "cutLettuce", "cutTomato" }, new string[] { "cookedDough", "cookedCheese", "cookedTomato" }, new string[] { "cookedDough", "cookedCheese", "cookedTomato", "cookedPepperoni" }, new string[] { "cookedDough", "cookedCheese", "cookedTomato", "cookedChicken" }, new string[] { "cookedDough", "cookedCheese", "cookedTomato", "cookedOlive" }, new string[] { "cookedFlour", "cookedEgg" }, new string[] { "cookedFlour", "cookedEgg", "cookedChocolate" }, new string[] { "cookedFlour", "cookedEgg", "cookedStrawberry" }, new string[] { "cookedFlour", "cookedEgg", "cookedBlueberry" }, new string[] { "cookedFlour", "cookedEgg", "cookedHoney" }, new string[] { "cookedFlour", "cookedEgg", "cookedHoney", "cookedChocolate" }, new string[] { "cookedFlour", "cookedEgg", "cookedHoney", "cookedCarrot" }, new string[] { "cookedFish" }, new string[] { "cookedFlour", "cookedBeef" }, new string[] { "cookedFlour", "cookedCarrot" }, new string[] { "cookedFlour", "cookedShrimp" } };
-    public readonly string[] allIngredients = new string[] { "fish", "shrimp", "cucumber", "rice", "seaweed", "cutFish", "cutShrimp", "cutCucumber", "cookedRice", "pasta", "mushroom", "beef", "tomato", "cutTomato", "cutBeef", "cutMushroom", "cookedFish", "cookedShrimp", "cookedMushroom", "cookedBeef", "cookedTomato", "cookedPasta", "lettuce", "cutLettuce", "tortilla", "potato", "chicken", "cutPotato", "cutChicken", "friedPotato", "friedChicken", "cookedChicken", "bun", "cheese", "cutCheese", "dough", "cutDough", "cookedDough", "pepperoni", "cutPepperoni", "cookedCheese", "cookedPepperoni", "flour", "egg", "mixedFlour", "mixedEgg", "chocolate", "blueberry", "strawberry", "cutChocolate", "cutBlueberry", "cutStrawberry", "mixedChocolate", "mixedBlueberry", "mixedStrawberry", "cookedFlour", "cookedEgg", "cookedChocolate", "cookedBlueberry", "cookedStrawberry", "honey", "carrot", "cutHoney", "cutCarrot", "mixedHoney", "mixedCarrot", "cookedHoney", "cookedCarrot", "mixedBeef", "mixedShrimp" };
-    private string beep = "overcooked-beep-(1) (mp3cut.net)(1)";
+    private readonly string[][] allOrders = new string[][] { new string[] { "cutFish" }, new string[] { "cutShrimp" }, new string[] { "seaweed", "cookedRice", "cutFish" }, new string[] { "seaweed", "cookedRice", "cutCucumber" }, new string[] { "seaweed", "cookedRice", "cutFish", "cutCucumber" }, new string[] { "cookedPasta", "cookedBeef" }, new string[] { "cookedPasta", "cookedMushroom" }, new string[] { "cookedPasta", "cookedTomato" }, new string[] { "cookedPasta", "cookedFish", "cookedShrimp" }, new string[] { "cutLettuce" }, new string[] { "cutLettuce", "cutTomato" }, new string[] { "cutLettuce", "cutTomato", "cutCucumber" }, new string[] { "friedPotato" }, new string[] { "friedChicken" }, new string[] { "friedPotato", "friedChicken" }, new string[] { "cookedRice", "tortilla", "cookedMushroom" }, new string[] { "cookedRice", "tortilla", "cookedBeef" }, new string[] { "cookedRice", "tortilla", "cookedChicken" }, new string[] { "bun", "cookedBeef" }, new string[] { "bun", "cookedBeef", "cutCheese" }, new string[] { "bun", "cookedBeef", "cutLettuce", "cutCheese" }, new string[] { "bun", "cookedBeef", "cutLettuce", "cutTomato" }, new string[] { "bakedDough", "bakedCheese", "bakedTomato" }, new string[] { "bakedDough", "bakedCheese", "bakedTomato", "bakedPepperoni" }, new string[] { "bakedDough", "bakedCheese", "bakedTomato", "bakedChicken" }, new string[] { "bakedDough", "bakedCheese", "bakedTomato", "bakedOlive" }, new string[] { "cookedFlour", "cookedEgg" }, new string[] { "cookedFlour", "cookedEgg", "cookedChocolate" }, new string[] { "cookedFlour", "cookedEgg", "cookedStrawberry" }, new string[] { "cookedFlour", "cookedEgg", "cookedBlueberry" }, new string[] { "bakedFlour", "bakedEgg", "bakedHoney" }, new string[] { "bakedFlour", "bakedEgg", "bakedHoney", "bakedChocolate" }, new string[] { "bakedFlour", "bakedEgg", "bakedHoney", "bakedCarrot" }, new string[] { "steamedFish" }, new string[] { "steamedFlour", "steamedBeef" }, new string[] { "steamedFlour", "steamedCarrot" }, new string[] { "steamedFlour", "steamedShrimp" } };
+    public readonly string[] allIngredients = new string[] { "fish", "shrimp", "cucumber", "rice", "seaweed", "cutFish", "cutShrimp", "cutCucumber", "cookedRice", "pasta", "mushroom", "beef", "tomato", "cutTomato", "cutBeef", "cutMushroom", "cookedFish", "cookedShrimp", "cookedMushroom", "cookedBeef", "cookedTomato", "cookedPasta", "lettuce", "cutLettuce", "tortilla", "potato", "chicken", "cutPotato", "cutChicken", "friedPotato", "friedChicken", "bakedChicken", "bun", "cheese", "cutCheese", "dough", "cutDough", "bakedDough", "pepperoni", "cutPepperoni", "bakedCheese", "bakedPepperoni", "flour", "egg", "mixedFlour", "mixedEgg", "chocolate", "blueberry", "strawberry", "cutChocolate", "cutBlueberry", "cutStrawberry", "mixedChocolate", "mixedBlueberry", "mixedStrawberry", "cookedFlour", "cookedEgg", "cookedChocolate", "cookedBlueberry", "cookedStrawberry", "honey", "carrot", "cutHoney", "cutCarrot", "mixedHoney", "mixedCarrot", "bakedHoney", "bakedCarrot", "mixedBeef", "mixedShrimp", "steamedFish", "steamedShrimp", "steamedBeef", "bakedTomato", "bakedFlour", "steamedFlour", "bakedEgg", "bakedChocolate", "cookedChicken" };
+    private string beep = "beep-22 (mp3cut.net)";
     public float minutesTime;
-    public readonly string[] uncombinable = new string[] { "cookedDough", "fish", "shrimp", "cucumber", "rice", "pasta", "mushroom", "beef", "tomato", "cutBeef", "cutMushroom", "lettuce", "potato", "chicken", "cutPotato", "cutChicken", "cheese", "dough", "pepperoni", "flour", "egg", "mixedFlour", "mixedEgg", "chocolate", "blueberry", "strawberry", "mixedChocolate", "mixedBlueberry", "mixedStrawberry", "cookedFlour", "cookedEgg", "cookedChocolate", "cookedBlueberry", "cookedStrawberry", "honey", "carrot", "mixedHoney", "mixedCarrot", "cookedHoney", "cookedCarrot", "mixedBeef", "mixedShrimp" };
+    public readonly string[] uncombinable = new string[] { "bakedDough", "fish", "shrimp", "cucumber", "rice", "pasta", "mushroom", "beef", "tomato", "cutBeef", "cutMushroom", "lettuce", "potato", "chicken", "cutPotato", "cutChicken", "cheese", "dough", "pepperoni", "flour", "egg", "mixedFlour", "mixedEgg", "chocolate", "blueberry", "strawberry", "mixedChocolate", "mixedBlueberry", "mixedStrawberry", "cookedFlour", "cookedEgg", "cookedChocolate", "cookedBlueberry", "cookedStrawberry", "honey", "carrot", "mixedHoney", "mixedCarrot", "cookedHoney", "bakedCarrot", "mixedBeef", "mixedShrimp", "steamedFish", "steamedShrimp", "steamedBeef", "steamedCarrot", "bakedTomato", "bakedFlour", "bakedChocolate", "bakedEgg" };
     public bool TPStrikeTimer;
 
     void Awake () {
@@ -122,12 +123,12 @@ public class Overcooked : MonoBehaviour {
         magic0 = new Place(
             new Box[] { new Box(this, 0, "dough"), new Box(this, 1, "cheese"), new Box(this, 2, "tomato") },
             new Station[] { new Cutting(this, 0), new Cutting(this, 1), new Cutting(this, 2), new Oven(this, 3), new Oven(this, 4), new Table(this, 5), new Table(this, 6) },
-            new string[][] { new string[] { "cookedDough", "cookedCheese", "cookedTomato" } },
+            new string[][] { new string[] { "bakedDough", "bakedCheese", "bakedTomato" } },
             2.5f);
         magic1 = new Place(
             new Box[] { new Box(this, 0, "dough"), new Box(this, 1, "cheese"), new Box(this, 2, "tomato"), new Box(this, 3, "pepperoni") },
             new Station[] { new Cutting(this, 0), new Cutting(this, 1), new Cutting(this, 2), new Oven(this, 3), new Oven(this, 4), new Table(this, 5), new Table(this, 6) },
-            new string[][] { new string[] { "cookedDough", "cookedCheese", "cookedTomato" }, new string[] { "cookedDough", "cookedCheese", "cookedTomato", "cookedPepperoni" } },
+            new string[][] { new string[] { "bakedDough", "bakedCheese", "bakedTomato" }, new string[] { "bakedDough", "bakedCheese", "bakedTomato", "bakedPepperoni" } },
             3f);
         magic2 = new Place(
             new Box[] { new Box(this, 0, "flour"), new Box(this, 1, "egg"), new Box(this, 2, "chocolate") },
@@ -142,12 +143,12 @@ public class Overcooked : MonoBehaviour {
         martian0 = new Place(
             new Box[] { new Box(this, 0, "flour"), new Box(this, 1, "egg"), new Box(this, 2, "honey"), new Box(this, 3, "chocolate"), new Box(this, 4, "carrot") },
             new Station[] { new Cutting(this, 0), new Cutting(this, 1), new Mixer(this, 2), new Mixer(this, 3), new OvenC(this, 4), new OvenC(this, 5), new Table(this, 6), new Table(this, 7) },
-            new string[][] { new string[] { "cookedFlour", "cookedEgg", "cookedHoney" }, new string[] { "cookedFlour", "cookedEgg", "cookedHoney", "cookedChocolate" }, new string[] { "cookedFlour", "cookedEgg", "cookedHoney", "cookedCarrot" } },
+            new string[][] { new string[] { "bakedFlour", "bakedEgg", "bakedHoney" }, new string[] { "bakedFlour", "bakedEgg", "bakedHoney", "bakedChocolate" }, new string[] { "bakedFlour", "bakedEgg", "bakedHoney", "bakedCarrot" } },
             4f);
         kevel0 = new Place(
             new Box[] { new Box(this, 0, "flour"), new Box(this, 1, "fish"), new Box(this, 2, "carrot"), new Box(this, 3, "beef"), new Box(this, 4, "shrimp") },
             new Station[] { new Cutting(this, 0), new Cutting(this, 1), new Mixer(this, 2), new Mixer(this, 3), new Steamer(this, 4), new Steamer(this, 5), new Table(this, 6), new Table(this, 7) },
-            new string[][] { new string[] { "cookedFish" }, new string[] { "cookedFlour", "cookedBeef" }, new string[] { "cookedFlour", "cookedCarrot" }, new string[] { "cookedFlour", "cookedShrimp" } },
+            new string[][] { new string[] { "steamedFish" }, new string[] { "steamedFlour", "steamedBeef" }, new string[] { "steamedFlour", "steamedCarrot" }, new string[] { "steamedFlour", "steamedShrimp" } },
             2.5f);
         Color[] colors = { Color.green, Color.green, Color.cyan, Color.cyan, Color.cyan, Color.blue, Color.yellow, Color.yellow, Color.magenta, Color.magenta, Color.magenta, Color.magenta, Color.red, Color.gray };
         places = new Place[] { sushi0, sushi1, sky0, sky1, sky2, rapids0, mines0, mines1, magic0, magic1, magic2, magic3, martian0, kevel0 };
