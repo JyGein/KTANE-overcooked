@@ -193,7 +193,7 @@ public class Overcooked : MonoBehaviour {
                 ingredientBoxes[i].OnInteract = delegate () { return false; };
             }
         }
-        trash.OnInteract += delegate () { if(ModuleSolved) { return false; } trash.AddInteractionPunch(); Audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, trash.transform); hands = new string[0]; log("Selected Trash, Emptied Hands."); return false; };
+        trash.OnInteract = delegate () { if(ModuleSolved) { return false; } trash.AddInteractionPunch(); Audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, trash.transform); hands = new string[0]; log("Selected Trash, Emptied Hands."); return false; };
         for(int i = 0; i < 8; i++) {
             try {
                 int dummy = i;
