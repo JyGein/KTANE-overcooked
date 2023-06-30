@@ -139,11 +139,11 @@ public class Mixer : Station {
             burning = 1;
             _module.Beep(_module.stations[_number]);
         }
-        if(timer >= (15 + burning)) {
+        if(timer >= (10 + burning)) {
             burning++;
             _module.Beep(_module.stations[_number]);
         }
-        if((timer >= 20 && !_module.TPStrikeTimer) || (timer >= 30 && _module.TPStrikeTimer)) {
+        if((timer >= 15 && !_module.TPStrikeTimer) || (timer >= 25 && _module.TPStrikeTimer)) {
             burning = 100;
             temp2 = "";
             foreach(string i in slot) {
@@ -152,9 +152,9 @@ public class Mixer : Station {
             _module.Strike($"{temp2} broke the mixer.");
         }
         MeshRenderer currentMesh = _module.stations[_number].transform.Find("progressBar").transform.GetComponent<MeshRenderer>();
-        if(timer > 0 && timer < 15) {
+        if(timer > 0 && timer < 10) {
             currentMesh.enabled = true;
-            _module.stations[_number].transform.Find("progressBar").transform.GetComponent<MeshRenderer>().material.SetTextureOffset("_MainTex", new Vector2(0, timer / 30));
+            _module.stations[_number].transform.Find("progressBar").transform.GetComponent<MeshRenderer>().material.SetTextureOffset("_MainTex", new Vector2(0, timer / 20));
         } else { currentMesh.enabled = false; }
     }
 }

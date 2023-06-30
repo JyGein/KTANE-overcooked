@@ -14,10 +14,10 @@ MonoBehaviour:
   id: Overcooked
   title: Overcooked
   author: JyGein
-  description: "The Great $\"{i} can't go in the oven.\" $\"Put {hands[0]} into the
-    pan.\" $\"Put {hands[0]} onto the cutter.\" return hands;\n\nCook the meals to
-    Solve.\n\nThe manual can be found in the manuals folder of the game or at ktane.timwi.de.\n\r\nContact
-    JyGein#5589 on Discord if there are any bugs.\n\nExchange."
+  description: "The Great Exchange, Let them cook, i can't go in the oven, Put hands
+    into the pan, Put hands onto the cutter, return hands;\n\nCook the meals to Solve.\n\nThe
+    manual can be found in the manuals folder of the game or at ktane.timwi.de.\n\r\nContact
+    JyGein#5589 on Discord if there are any bugs."
   version: v0.0
   outputFolder: build
   previewImage: {fileID: 2800000, guid: c23760e900607094eb2829ad9a961854, type: 3}
