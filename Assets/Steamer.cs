@@ -21,6 +21,9 @@ public class Steamer : Station {
     public override void startup() {
         updateText();
         _module.stations[_number].transform.Find("stationImage").transform.GetComponent<MeshRenderer>().material = _module.stationMaterials[Image];
+        if(_module.colorblindtime) {
+            _module.colorblindTexts[_number].transform.GetComponent<TextMesh>().text = Color;
+        }
         /*uncooked = new string[] { "rice" };
         cooked = new string[] { "cookedRice" };
         slot = new string[0];

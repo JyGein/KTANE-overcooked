@@ -17,6 +17,9 @@ public class Table : Station {
     public override void startup() {
         updateText();
         _module.stations[_number].transform.Find("stationImage").transform.GetComponent<MeshRenderer>().material = _module.stationMaterials[Image];
+        if(_module.colorblindtime) {
+            _module.colorblindTexts[_number].transform.GetComponent<TextMesh>().text = Color;
+        }
     }
     public override string[] Interact(string[] hands) {
         string[] temp = new string[slot.Length + hands.Length];

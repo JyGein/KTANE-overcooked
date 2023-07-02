@@ -17997,9 +17997,20 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 6e590bc6abf5b2042b7e2b2938ccddde, type: 2}
   - {fileID: 2100000, guid: e610908cbb44c1f43a205da31f94a443, type: 2}
   moduleMaterial: {fileID: 4949801867204194}
-  textTemplate: {fileID: 0}
+  textTemplate: {fileID: 1718687929481992, guid: e8e8a3bb4ebf08f439de8d7a1dbf47bb,
+    type: 2}
   minutesTime: 0
   TPStrikeTimer: 0
+  colorblindTexts:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  colorblindtime: 0
 --- !u!114 &114522923695433038
 MonoBehaviour:
   m_ObjectHideFlags: 1

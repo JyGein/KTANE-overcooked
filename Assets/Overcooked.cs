@@ -7,7 +7,7 @@ using UnityEngine;
 using KModkit;
 using Rnd = UnityEngine.Random;
 
-public class Overcooked : MonoBehaviour {
+public class Overcooked : KtaneModule {
 
     public KMBombInfo Bomb;
     public KMAudio Audio;
@@ -55,11 +55,18 @@ public class Overcooked : MonoBehaviour {
     public float minutesTime;
     public readonly string[] uncombinable = new string[] { "bakedDough", "fish", "shrimp", "cucumber", "rice", "pasta", "mushroom", "beef", "tomato", "cutBeef", "cutMushroom", "lettuce", "potato", "chicken", "cutPotato", "cutChicken", "cheese", "dough", "pepperoni", "flour", "egg", "mixedFlour", "mixedEgg", "chocolate", "blueberry", "strawberry", "mixedChocolate", "mixedBlueberry", "mixedStrawberry", "cookedFlour", "cookedEgg", "cookedChocolate", "cookedBlueberry", "cookedStrawberry", "honey", "carrot", "mixedHoney", "mixedCarrot", "cookedHoney", "bakedCarrot", "mixedBeef", "mixedShrimp", "steamedFish", "steamedShrimp", "steamedBeef", "steamedCarrot", "bakedTomato", "bakedFlour", "bakedChocolate", "bakedEgg" };
     public bool TPStrikeTimer;
+    public GameObject[] colorblindTexts = new GameObject[8];
+    public bool colorblindtime;
 
     void Awake () {
         ModuleId = ModuleIdCounter++; 
         GetComponent<KMBombModule>().OnActivate += Activate;
-
+        colorblindtime = ColorblindMode;
+        for(int i=0; i<8; i++) {
+            colorblindTexts[i] = Instantiate(textTemplate);
+            colorblindTexts[i].transform.parent = stations[i].transform;
+            colorblindTexts[i].transform.localPosition = new Vector3(0, 0.2f, 0.67f);
+        }
         /*
         foreach (KMSelectable object in keypad) {
             object.OnInteract += delegate () { keypadPress(object); return false; };
@@ -201,8 +208,8 @@ public class Overcooked : MonoBehaviour {
                 int dummy = i;
                 stations[i].gameObject.SetActive(true);
                 stations[i].transform.GetComponent<MeshRenderer>().enabled = true;
-                stations[i].transform.Find("stationImage").transform.GetComponent<MeshRenderer>().enabled = true;
                 place.Stations[i].startup();
+                stations[i].transform.Find("stationImage").transform.GetComponent<MeshRenderer>().enabled = true;
                 stations[i].OnInteract = delegate () { stationPress(stations[dummy], place.Stations[dummy]); return false; };
             } catch {
                 stations[i].gameObject.SetActive(false);
@@ -374,12 +381,13 @@ public class Overcooked : MonoBehaviour {
     }
 
 #pragma warning disable 414
-    private readonly string TwitchHelpMessage = @"Use !{0} i#/s#/o/t to press an ingredient box/station/output/trash. Ingredients and stations are numbered in reading order. Commands can be chained like !1 i3 s1 s8 t s6 o. It takes 15 seconds rather than 5 to burn in TP.";
+    private readonly string TwitchHelpMessage = @"Use !{0} i#/s#/o/t to press an ingredient box/station/output/trash. Ingredients and stations are numbered in reading order. Commands can be chained like !1 i3 s1 s8 t s6 o. It takes 15 seconds rather than 5 to burn in TP. !{0} colorblind to turn on colorblind mode.";
 #pragma warning restore 414
 
     KMSelectable[] ProcessTwitchCommand (string Command) {
         TPStrikeTimer = true;
         string LowerCommand = Command.ToLower().Trim();
+        if(LowerCommand == "colorblind") { colorblindtime = true; foreach(Station i in place.Stations) { i.startup(); } return new KMSelectable[0]; }
         Match m = Regex.Match(LowerCommand, @"^((i[1-9]|s[1-8]|t|o)\s?\b)+$");
         if(!m.Success) { return null; }
         List<KMSelectable> press = new List<KMSelectable>();
