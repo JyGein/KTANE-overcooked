@@ -15,6 +15,7 @@ public class PanP : Station {
     string[] cooked = { "cookedFlour", "cookedEgg", "cookedChocolate", "cookedBlueberry", "cookedStrawberry" };
     public new string[] slot = new string[0];
     public new int Image = 3;
+    public new string Color = "P";
     public new float timer = 0;
     private int burning = 0;
     public override void startup() {

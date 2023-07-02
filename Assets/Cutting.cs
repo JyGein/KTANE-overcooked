@@ -15,6 +15,7 @@ public class Cutting : Station {
     readonly string[] cut = { "cutFish", "cutShrimp", "cutCucumber", "cutMushroom", "cutTomato", "cutBeef", "cutLettuce", "cutPotato", "cutChicken", "cutCheese", "cutDough", "cutPepperoni", "cutChocolate", "cutBlueberry", "cutStrawberry", "cutHoney", "cutCarrot" };
     public new string[] slot = new string[0];
     public new int Image = 1;
+    public new string Color = "S";
     public new float timer = 0;
     public override void startup() {
         updateText();

@@ -15,6 +15,7 @@ public class Mixer : Station {
     string[] mixed = { "mixedFlour", "mixedEgg", "mixedChocolate", "mixedBlueberry", "mixedStrawberry", "mixedHoney", "mixedCarrot", "mixedShrimp", "mixedBeef" };
     public new string[] slot = new string[0];
     public new int Image = 6;
+    public new string Color = "I";
     public new float timer = 0;
     private int burning = 0;
     public override void startup() {

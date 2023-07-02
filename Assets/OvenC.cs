@@ -15,6 +15,7 @@ public class OvenC : Station {
     string[] cooked = { "bakedFlour", "bakedEgg", "bakedChocolate", "bakedHoney", "bakedCarrot" };
     public new string[] slot = new string[0];
     public new int Image = 5;
+    public new string Color = "C";
     public new float timer = 0;
     private int burning = 0;
     public override void startup() {

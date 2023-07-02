@@ -15,6 +15,7 @@ public class Fryer : Station {
     string[] cooked = { "friedPotato", "friedChicken" };
     public new string[] slot = new string[0];
     public new int Image = 4;
+    public new string Color = "O";
     public new float timer = 0;
     private int burning = 0;
     public override void startup() {

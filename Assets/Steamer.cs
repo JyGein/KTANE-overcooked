@@ -15,6 +15,7 @@ public class Steamer : Station {
     string[] cooked = { "steamedFlour", "steamedCarrot", "steamedBeef", "steamedShrimp", "steamedFish" };
     public new string[] slot = new string[0];
     public new int Image = 7;
+    public new string Color = "Y";
     public new float timer = 0;
     private int burning = 0;
     public override void startup() {

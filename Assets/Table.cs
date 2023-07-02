@@ -13,6 +13,7 @@ public class Table : Station {
     private int _number;
     public new string[] slot = new string[0];
     public new int Image = 0;
+    public new string Color = "N";
     public override void startup() {
         updateText();
         _module.stations[_number].transform.Find("stationImage").transform.GetComponent<MeshRenderer>().material = _module.stationMaterials[Image];

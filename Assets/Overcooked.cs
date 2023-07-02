@@ -25,6 +25,7 @@ public class Overcooked : MonoBehaviour {
     public Transform handsDisplay;
     public Material[] stationMaterials;
     public Transform moduleMaterial;
+    public GameObject textTemplate;
 
     bool ModuleSolved;
     bool ModuleSolved2;
@@ -58,6 +59,7 @@ public class Overcooked : MonoBehaviour {
     void Awake () {
         ModuleId = ModuleIdCounter++; 
         GetComponent<KMBombModule>().OnActivate += Activate;
+
         /*
         foreach (KMSelectable object in keypad) {
             object.OnInteract += delegate () { keypadPress(object); return false; };
@@ -372,12 +374,30 @@ public class Overcooked : MonoBehaviour {
     }
 
 #pragma warning disable 414
-    private readonly string TwitchHelpMessage = @"Use !{0} to do something.";
+    private readonly string TwitchHelpMessage = @"Use !{0} i#/s#/o/t to press an ingredient box/station/output/trash. Ingredients and stations are numbered in reading order. Commands can be chained like !1 i3 s1 s8 t s6 o. It takes 15 seconds rather than 5 to burn in TP.";
 #pragma warning restore 414
 
     KMSelectable[] ProcessTwitchCommand (string Command) {
         TPStrikeTimer = true;
-        return null;
+        string LowerCommand = Command.ToLower().Trim();
+        Match m = Regex.Match(LowerCommand, @"^((i[1-9]|s[1-8]|t|o)\s?\b)+$");
+        if(!m.Success) { return null; }
+        List<KMSelectable> press = new List<KMSelectable>();
+        foreach(string i in m.Value.Split(' ')) {
+            if(i[0] == 't') {
+                press.Add(trash);
+            }
+            if(i[0] == 'o') {
+                press.Add(output);
+            }
+            if(i[0] == 's') {
+                press.Add(stations[i[1]-'1']);
+            }
+            if(i[0] == 'i') {
+                press.Add(ingredientBoxes[i[1]-'1']);
+            }
+        }
+        return press.ToArray();
     }
 
     KMSelectable[] TwitchHandleForcedSolve () {

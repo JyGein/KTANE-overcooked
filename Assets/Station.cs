@@ -14,4 +14,5 @@ public abstract class Station {
     public float timer = 0;
     public string[] slot = new string[0];
     public int Image;
+    public string Color;
 }
