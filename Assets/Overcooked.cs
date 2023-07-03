@@ -7,7 +7,7 @@ using UnityEngine;
 using KModkit;
 using Rnd = UnityEngine.Random;
 
-public class Overcooked : KtaneModule {
+public class Overcooked : MonoBehaviour {
 
     public KMBombInfo Bomb;
     public KMAudio Audio;
@@ -60,8 +60,7 @@ public class Overcooked : KtaneModule {
 
     void Awake () {
         ModuleId = ModuleIdCounter++; 
-        GetComponent<KMBombModule>().OnActivate += Activate;
-        colorblindtime = ColorblindMode;
+        colorblindtime = true;
         for(int i=0; i<8; i++) {
             colorblindTexts[i] = Instantiate(textTemplate);
             colorblindTexts[i].transform.parent = stations[i].transform;
@@ -74,14 +73,6 @@ public class Overcooked : KtaneModule {
         */
 
          //button.OnInteract += delegate () { buttonPress(); return false; };
-
-    }
-
-    void OnDestroy () { //Shit you need to do when the bomb ends
-        
-    }
-
-    void Activate () { //Shit that should happen when the bomb arrives (factory)/Lights turn on
 
     }
 
@@ -381,7 +372,7 @@ public class Overcooked : KtaneModule {
     }
 
 #pragma warning disable 414
-    private readonly string TwitchHelpMessage = @"Use !{0} i#/s#/o/t to press an ingredient box/station/output/trash. Ingredients and stations are numbered in reading order. Commands can be chained like !1 i3 s1 s8 t s6 o. It takes 15 seconds rather than 5 to burn in TP. !{0} colorblind to turn on colorblind mode.";
+    private readonly string TwitchHelpMessage = @"Use !{0} i#/s#/o/t to press an ingredient box/station/output/trash. Ingredients and stations are numbered in reading order. Commands can be chained like !1 i3 s1 s8 t s6 o. It takes 15 seconds rather than 5 to burn in TP.";
 #pragma warning restore 414
 
     KMSelectable[] ProcessTwitchCommand (string Command) {
