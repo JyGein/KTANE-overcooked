@@ -77,7 +77,6 @@ public class Mixer : Station {
     */
     public override string[] Interact(string[] hands) {
         string[] temp = new string[slot.Length + hands.Length];
-        string temp2 = "";
         if(slot.Length == 0 && hands.Length == 0) {
             _module.log("Holding nothing and nothing in the mixer.");
             return hands;
@@ -90,10 +89,7 @@ public class Mixer : Station {
             }
         }
         if(hands.Length == 0) {
-            foreach(string i in slot) {
-                temp2 += i;
-            }
-            _module.log($"Took {temp2} out of the mixer.");
+            _module.log($"Took {_module.arrayToString(slot)} out of the mixer.");
             temp = slot;
             slot = new string[0];
             updateText();
@@ -101,10 +97,7 @@ public class Mixer : Station {
             burning = 0;
             return temp;
         }
-        foreach(string i in hands) {
-            temp2 += i;
-        }
-        _module.log($"Put {temp2} in the mixer.");
+        _module.log($"Put {_module.arrayToString(hands)} in the mixer.");
         if(timer >= 15) {
             timer = 15 / ((float)Math.Pow(2, hands.Length));
         } else {
@@ -121,7 +114,6 @@ public class Mixer : Station {
                 timer = 10 * slot.Where(i => mixed.Contains(i)).ToArray().Length / slot.Length;
             }
         } catch { }
-        string temp2;
         if(slot.Length > 0 && timer <= 10) {
             timer += Time.deltaTime/slot.Length;
         }
@@ -129,11 +121,7 @@ public class Mixer : Station {
             timer += Time.deltaTime;
         }
         if(timer >= 10 && burning == 0) {
-            temp2 = "";
-            foreach(string i in slot) {
-                temp2 += i;
-            }
-            _module.log($"{temp2} is done mixing");
+            _module.log($"{_module.arrayToString(slot)} is done mixing");
             for(int i = 0; i < slot.Length; i++) {
                 try {
                     slot[i] = mixed[Array.IndexOf(unmixed, slot[i])];
@@ -149,11 +137,7 @@ public class Mixer : Station {
         }
         if((timer >= 15 && !_module.TPStrikeTimer) || (timer >= 25 && _module.TPStrikeTimer)) {
             burning = 100;
-            temp2 = "";
-            foreach(string i in slot) {
-                temp2 += i;
-            }
-            _module.Strike($"{temp2} broke the mixer.");
+            _module.Strike($"{_module.arrayToString(slot)} broke the mixer.");
         }
         MeshRenderer currentMesh = _module.stations[_number].transform.Find("progressBar").transform.GetComponent<MeshRenderer>();
         if(timer > 0 && timer < 10) {

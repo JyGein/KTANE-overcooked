@@ -294,7 +294,12 @@ public class Overcooked : MonoBehaviour {
 
     public string arrayToString(string[] f) {
         string temp = "";
+        int count = 0;
         foreach(string i in f) {
+            if(count != 0) {
+                temp += " ";
+            }
+            count++;
             temp += i;
         }
         return temp;
@@ -302,8 +307,12 @@ public class Overcooked : MonoBehaviour {
     
     public string arrayArrayToString(string[][] f) {
         string temp = "";
+        int count = 0;
         foreach(string[] i in f) {
-            temp += " ";
+            if(count != 0) {
+                temp += ", ";
+            }
+            count++;
             temp += arrayToString(i);
         }
         return temp;
@@ -356,7 +365,28 @@ public class Overcooked : MonoBehaviour {
     }
 
     public void log(string message) {
-        Debug.Log($"[Overcooked #{ModuleId}] {message}");
+        string output = "";
+        foreach(string i in message.Split(',')) {
+            foreach(string f in i.Split(' ')) {
+                if(allIngredients.Contains(f.Split('.')[0])) {
+                    string d = f[0].ToString().ToUpper();
+                    d += f.Substring(1);
+                    output += d;
+                    if(!(i.Split(' ').Last() == f)) {
+                        output += ' ';
+                    }
+                } else {
+                    output += f;
+                    if(!(i.Split(' ').Last() == f)) {
+                        output += ' ';
+                    }
+                }
+            }
+            if(!(message.Split(',').Last() == i)) {
+                output += ',';
+            }
+        }
+        Debug.Log($"[Overcooked #{ModuleId}] {output}");
     }
 
     void Solve () {

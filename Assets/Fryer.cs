@@ -106,7 +106,7 @@ public class Fryer : Station {
         }
         catch { }
         if(timer >= 15 && burning == 0) {
-            _module.log($"{slot} is done cooking");
+            _module.log($"{slot[0]} is done cooking");
             slot[0] = cooked[Array.IndexOf(uncooked, slot[0])];
             updateText();
             burning = 1;

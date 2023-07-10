@@ -77,7 +77,6 @@ public class OvenC : Station {
     */
     public override string[] Interact(string[] hands) {
         string[] temp = new string[slot.Length + hands.Length];
-        string temp2 = "";
         if(slot.Length == 0 && hands.Length == 0) {
             _module.log("Holding nothing and nothing in the Oven.");
             return hands;
@@ -88,10 +87,7 @@ public class OvenC : Station {
             return hands;
         }
         if(hands.Length == 0) {
-            foreach(string i in slot) {
-                temp2 += i;
-            }
-            _module.log($"Took {temp2} out of the Oven.");
+            _module.log($"Took {_module.arrayToString(slot)} out of the Oven.");
             temp = slot;
             slot = new string[0];
             updateText();
@@ -105,10 +101,7 @@ public class OvenC : Station {
                 return hands;
             }
         }
-        foreach(string i in hands) {
-            temp2 += i;
-        }
-        _module.log($"Put {temp2} in the Oven.");
+        _module.log($"Put {_module.arrayToString(hands)} in the Oven.");
         timer = 0;
         burning = 0;
         slot = slot.Concat(hands).ToArray();
@@ -116,16 +109,11 @@ public class OvenC : Station {
         return new string[0];
     }
     public override void updoot() {
-        string temp2;
         if(slot.Length > 0) {
             timer += Time.deltaTime;
         }
         if(timer >= 15 && burning == 0) {
-            temp2 = "";
-            foreach(string i in slot) {
-                temp2 += i;
-            }
-            _module.log($"{temp2} is done cooking");
+            _module.log($"{_module.arrayToString(slot)} is done cooking");
             for(int i = 0; i < slot.Length; i++) {
                 try {
                     slot[i] = cooked[Array.IndexOf(uncooked, slot[i])];
@@ -141,11 +129,7 @@ public class OvenC : Station {
         }
         if((timer >= 20 && !_module.TPStrikeTimer) || (timer >= 30 && _module.TPStrikeTimer)) {
             burning = 100;
-            temp2 = "";
-            foreach(string i in slot) {
-                temp2 += i;
-            }
-            _module.Strike($"{temp2} burned in the Oven.");
+            _module.Strike($"{_module.arrayToString(slot)} burned in the Oven.");
         }
         MeshRenderer currentMesh = _module.stations[_number].transform.Find("progressBar").transform.GetComponent<MeshRenderer>();
         if(timer > 0 && timer < 15) {

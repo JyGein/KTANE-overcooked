@@ -23,22 +23,13 @@ public class Table : Station {
     }
     public override string[] Interact(string[] hands) {
         string[] temp = new string[slot.Length + hands.Length];
-        string[] temp2 = new string[4];
         if(slot.Length == 0 && hands.Length == 0) {
             _module.log("Holding nothing and nothing on the counter");
             return hands;
         }
         if(slot.Length + hands.Length > 4) { _module.log($"No space on the Counter."); return hands; }
         if(hands.Length == 0) {
-            for(int i = 0; i < 4; i++) {
-                try {
-                    temp2[i] = slot[i];
-                }
-                catch {
-                    temp2[i] = "";
-                }
-            }
-            _module.log($"Took {temp2[0] + temp2[1] + temp2[2] + temp2[3]} off the counter.");
+            _module.log($"Took {_module.arrayToString(slot)} off the counter.");
             temp = slot;
             slot = new string[0];
             updateText();
@@ -53,14 +44,7 @@ public class Table : Station {
                 }
             }
         }
-        for(int i=0; i<4; i++) {
-            try {
-                temp2[i] = hands[i];
-            } catch {
-                temp2[i] = "";
-            }
-        }
-        _module.log($"Put {temp2[0] + temp2[1] + temp2[2] + temp2[3]} on the counter.");
+        _module.log($"Put {_module.arrayToString(hands)} on the counter.");
         for(int i = 0; i < slot.Length; i++) {
             temp[i] = slot[i];
         }

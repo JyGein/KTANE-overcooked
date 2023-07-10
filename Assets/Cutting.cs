@@ -102,7 +102,7 @@ public class Cutting : Station {
             }
         } catch { }
         if(timer >= 15) {
-            _module.log($"{slot} is done cutting");
+            _module.log($"{slot[0]} is done cutting");
             slot[0] = cut[Array.IndexOf(uncut, slot[0])];
             updateText();
             timer = 0;
