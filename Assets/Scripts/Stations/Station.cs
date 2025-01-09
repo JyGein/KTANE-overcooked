@@ -8,7 +8,7 @@ using KModkit;
 using Rnd = UnityEngine.Random;
 
 public abstract class Station {
-    public abstract string[] Interact(string[] hands);
+    public abstract string[] Interact(Ingredient[] hands);
     public abstract void updoot();
     public abstract void startup();
     public float timer = 0;

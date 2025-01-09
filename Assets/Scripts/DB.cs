@@ -9,90 +9,89 @@ using Rnd = UnityEngine.Random;
 
 public static class DB {
     public static Texture[] ingredientImages;
-    /*public static Place sushi0 = new Place(
-            new Box[] { new Box(this, 0, "lettuce"), new Box(this, 1, "tomato"), new Box(this, 2, "cucumber"), new Box(this, 3, "fish"), new Box(this, 4, "shrimp"), new Box(this, 5, "rice"), new Box(this, 6, "seaweed") },
-            new Station[] { new Cutting(this, 0), new Cutting(this, 1), new Pot(this, 2), new Pot(this, 3), new Table(this, 4), new Table(this, 5) },
-            new string[][] { new string[] { "cutFish" }, new string[] { "cutShrimp" }, new string[] { "seaweed", "cookedRice", "cutFish" }, new string[] { "seaweed", "cookedRice", "cutCucumber" }, new string[] { "seaweed", "cookedRice", "cutFish", "cutCucumber" }, new string[] { "cutFish" }, new string[] { "cutShrimp" }, new string[] { "seaweed", "cookedRice", "cutFish" }, new string[] { "seaweed", "cookedRice", "cutCucumber" }, new string[] { "seaweed", "cookedRice", "cutFish", "cutCucumber" }, new string[] { "cutLettuce" }, new string[] { "cutLettuce", "cutTomato" }, new string[] { "cutLettuce", "cutTomato", "cutCucumber" } },
+    public static Place sushi0 = new Place(
+            new Ingredient[] { new Lettuce(), new Tomato(), new Cucumber(), new Fish(), new Prawn(), new Rice(), new Seaweed() },
+            new Station[] { new Cutting(0), new Cutting(1), new Pot(2), new Pot( 3), new Table(4), new Table(5) },
+            new string[][] { new string[] { "cutFish" }, new string[] { "cutPrawn" }, new string[] { "seaweed", "cookedRice", "cutFish" }, new string[] { "seaweed", "cookedRice", "cutCucumber" }, new string[] { "seaweed", "cookedRice", "cutFish", "cutCucumber" }, new string[] { "cutFish" }, new string[] { "cutPrawn" }, new string[] { "seaweed", "cookedRice", "cutFish" }, new string[] { "seaweed", "cookedRice", "cutCucumber" }, new string[] { "seaweed", "cookedRice", "cutFish", "cutCucumber" }, new string[] { "cutLettuce" }, new string[] { "cutLettuce", "cutTomato" }, new string[] { "cutLettuce", "cutTomato", "cutCucumber" } },
             2.5f,
             Color.green);
     public static Place sushi1 = new Place(
-            new Box[] { new Box(this, 0, "bun"), new Box(this, 1, "beef"), new Box(this, 2, "cucumber"), new Box(this, 3, "fish"), new Box(this, 4, "shrimp"), new Box(this, 5, "rice"), new Box(this, 6, "seaweed") }, 
-            new Station[] { new Cutting(this, 0), new Cutting(this, 1), new Pot(this, 2), new Pot(this, 3), new Table(this, 4), new Table(this, 5), new Pan(this, 6), new Pan(this, 7) }, 
-            new string[][] { new string[] { "cutFish" }, new string[] { "cutShrimp" }, new string[] { "seaweed", "cookedRice", "cutFish" }, new string[] { "seaweed", "cookedRice", "cutCucumber" }, new string[] { "seaweed", "cookedRice", "cutFish", "cutCucumber" }, new string[] { "bun", "cookedBeef" }, }, 
+            new Ingredient[] { new Bun(), new Meat(), new Lettuce(), new Tomato(), new Cucumber(), new Fish(), new Prawn(), new Rice(), new Seaweed() }, 
+            new Station[] { new Cutting(0), new Cutting(1), new Pot(2), new Pot(3), new Table(4), new Table(5), new Pan(6), new Pan(7) }, 
+            new string[][] { new string[] { "cutFish" }, new string[] { "cutPrawn" }, new string[] { "seaweed", "cookedRice", "cutFish" }, new string[] { "seaweed", "cookedRice", "cutCucumber" }, new string[] { "seaweed", "cookedRice", "cutFish", "cutCucumber" }, new string[] { "bun", "cookedMeat" }, }, 
             2.5f,
             Color.green);
     public static Place sky0 = new Place(
-            new Box[] { new Box(this, 0, "lettuce"), new Box(this, 1, "tomato"), new Box(this, 2, "cucumber"), new Box(this, 3, "mushroom"), new Box(this, 4, "beef"), new Box(this, 5, "fish"), new Box(this, 6, "shrimp"), new Box(this, 7, "pasta") }, 
-            new Station[] { new Cutting(this, 0), new Cutting(this, 1), new Pan(this, 2), new Pan(this, 3), new Pot(this, 4), new Pot(this, 5), new Table(this, 6), new Table(this, 7) }, 
-            new string[][] { new string[] { "cookedPasta", "cookedBeef" }, new string[] { "cookedPasta", "cookedMushroom" }, new string[] { "cookedPasta", "cookedTomato" }, new string[] { "cookedPasta", "cookedFish", "cookedShrimp" }, new string[] { "cookedPasta", "cookedBeef" }, new string[] { "cookedPasta", "cookedMushroom" }, new string[] { "cookedPasta", "cookedTomato" }, new string[] { "cookedPasta", "cookedFish", "cookedShrimp" }, new string[] { "cutLettuce" }, new string[] { "cutLettuce", "cutTomato" }, new string[] { "cutLettuce", "cutTomato", "cutCucumber" } }, 
+            new Ingredient[] { new Lettuce(), new Tomato(), new Cucumber(), new Mushroom(), new Meat(), new Fish(), new Prawn(), new Pasta() }, 
+            new Station[] { new Cutting(0), new Cutting(1), new Pan(2), new Pan(3), new Pot(4), new Pot(5), new Table(6), new Table(7) }, 
+            new string[][] { new string[] { "cookedPasta", "cookedMeat" }, new string[] { "cookedPasta", "cookedMushroom" }, new string[] { "cookedPasta", "cookedTomato" }, new string[] { "cookedPasta", "cookedFish", "cookedPrawn" }, new string[] { "cookedPasta", "cookedMeat" }, new string[] { "cookedPasta", "cookedMushroom" }, new string[] { "cookedPasta", "cookedTomato" }, new string[] { "cookedPasta", "cookedFish", "cookedPrawn" }, new string[] { "cutLettuce" }, new string[] { "cutLettuce", "cutTomato" }, new string[] { "cutLettuce", "cutTomato", "cutCucumber" } }, 
             2.5f,
             Color.cyan);
     public static Place sky1 = new Place(
-            new Box[] { new Box(this, 0, "bun"), new Box(this, 1, "cheese"), new Box(this, 2, "lettuce"), new Box(this, 3, "mushroom"), new Box(this, 4, "beef"), new Box(this, 5, "fish"), new Box(this, 6, "shrimp"), new Box(this, 7, "pasta"), new Box(this, 8, "tomato") }, 
-            new Station[] { new Cutting(this, 0), new Cutting(this, 1), new Pan(this, 2), new Pan(this, 3), new Pot(this, 4), new Pot(this, 5), new Table(this, 6), new Table(this, 7) }, 
-            new string[][] { new string[] { "cookedPasta", "cookedBeef" }, new string[] { "cookedPasta", "cookedMushroom" }, new string[] { "cookedPasta", "cookedTomato" }, new string[] { "cookedPasta", "cookedFish", "cookedShrimp" }, new string[] { "bun", "cookedBeef" }, new string[] { "bun", "cookedBeef", "cutCheese" }, new string[] { "bun", "cookedBeef", "cutLettuce", "cutCheese" }, new string[] { "bun", "cookedBeef", "cutLettuce", "cutTomato" } }, 
+            new Ingredient[] { new Bun(), new Cheese(), new Lettuce(), new Mushroom(), new Meat(), new Fish(), new Prawn(), new Pasta(), new Tomato() }, 
+            new Station[] { new Cutting(0), new Cutting(1), new Pan(2), new Pan(3), new Pot(4), new Pot(5), new Table(6), new Table(7) }, 
+            new string[][] { new string[] { "cookedPasta", "cookedMeat" }, new string[] { "cookedPasta", "cookedMushroom" }, new string[] { "cookedPasta", "cookedTomato" }, new string[] { "cookedPasta", "cookedFish", "cookedPrawn" }, new string[] { "bun", "cookedMeat" }, new string[] { "bun", "cookedMeat", "cutCheese" }, new string[] { "bun", "cookedMeat", "cutLettuce", "cutCheese" }, new string[] { "bun", "cookedMeat", "cutLettuce", "cutTomato" } }, 
             3.5f,
             Color.cyan);
     public static Place sky2 = new Place(
-            new Box[] { new Box(this, 0, "bun"), new Box(this, 1, "cheese"), new Box(this, 2, "lettuce"), new Box(this, 3, "beef"), new Box(this, 4, "tomato")},
-            new Station[] { new Cutting(this, 0), new Cutting(this, 1), new Pan(this, 2), new Pan(this, 3), new Table(this, 4), new Table(this, 5) }, 
-            new string[][] { new string[] { "bun", "cookedBeef" }, new string[] { "bun", "cookedBeef", "cutCheese" }, new string[] { "bun", "cookedBeef", "cutLettuce", "cutCheese" }, new string[] { "bun", "cookedBeef", "cutLettuce", "cutTomato" } }, 
+            new Ingredient[] { new Bun(), new Cheese(), new Lettuce(), new Meat(), new Tomato() },
+            new Station[] { new Cutting(0), new Cutting(1), new Pan(2), new Pan(3), new Table(4), new Table(5) }, 
+            new string[][] { new string[] { "bun", "cookedMeat" }, new string[] { "bun", "cookedMeat", "cutCheese" }, new string[] { "bun", "cookedMeat", "cutLettuce", "cutCheese" }, new string[] { "bun", "cookedMeat", "cutLettuce", "cutTomato" } }, 
             2.5f,
             Color.cyan);
     public static Place rapids0 = new Place(
-            new Box[] { new Box(this, 0, "potato"), new Box(this, 1, "chicken") }, 
-            new Station[] { new Cutting(this, 0), new Cutting(this, 1), new Fryer(this, 2), new Fryer(this, 3), new Table(this, 4), new Table(this, 5) }, 
+            new Ingredient[] { new Potato(), new Chicken() }, 
+            new Station[] { new Cutting(0), new Cutting(1), new Fryer(2), new Fryer(3), new Table(4), new Table(5) }, 
             new string[][] { new string[] { "friedPotato" }, new string[] { "friedChicken" }, new string[] { "friedPotato", "friedChicken" } }, 
             2f,
             Color.blue);
     public static Place mines0 = new Place(
-            new Box[] { new Box(this, 0, "tortilla"), new Box(this, 1, "chicken"), new Box(this, 2, "beef"), new Box(this, 3, "mushroom"), new Box(this, 4, "rice") },
-            new Station[] { new Cutting(this, 0), new Cutting(this, 1), new Pan(this, 2), new Pan(this, 3), new Pot(this, 4), new Pot(this, 5), new Table(this, 6), new Table(this, 7) },
-            new string[][] { new string[] { "cookedRice", "tortilla", "cookedMushroom" }, new string[] { "cookedRice", "tortilla", "cookedBeef" }, new string[] { "cookedRice", "tortilla", "cookedChicken" } },
+            new Ingredient[] { new Tortilla(), new Chicken(), new Meat(), new Mushroom(), new Rice() },
+            new Station[] { new Cutting(0), new Cutting(1), new Pan(2), new Pan(3), new Pot(4), new Pot(5), new Table(6), new Table(7) },
+            new string[][] { new string[] { "cookedRice", "tortilla", "cookedMushroom" }, new string[] { "cookedRice", "tortilla", "cookedMeat" }, new string[] { "cookedRice", "tortilla", "cookedChicken" } },
             2.5f,
             Color.yellow);
     public static Place mines1 = new Place(
-            new Box[] { new Box(this, 0, "bun"), new Box(this, 1, "cheese"), new Box(this, 2, "beef") },
-            new Station[] { new Cutting(this, 0), new Cutting(this, 1), new Pan(this, 2), new Pan(this, 3), new Table(this, 4), new Table(this, 5) },
-            new string[][] { new string[] { "bun", "cookedBeef" }, new string[] { "bun", "cookedBeef", "cutCheese" } },
+            new Ingredient[] { new Bun(), new Cheese(), new Meat() },
+            new Station[] { new Cutting(0), new Cutting(1), new Pan(2), new Pan(3), new Table(4), new Table(5) },
+            new string[][] { new string[] { "bun", "cookedMeat" }, new string[] { "bun", "cookedMeat", "cutCheese" } },
             2f,
             Color.yellow);
     public static Place magic0 = new Place(
-            new Box[] { new Box(this, 0, "dough"), new Box(this, 1, "cheese"), new Box(this, 2, "tomato") },
-            new Station[] { new Cutting(this, 0), new Cutting(this, 1), new Cutting(this, 2), new Oven(this, 3), new Oven(this, 4), new Table(this, 5), new Table(this, 6) },
+            new Ingredient[] { new Dough(), new Cheese(), new Tomato() },
+            new Station[] { new Cutting(0), new Cutting(1), new Cutting(2), new Oven(3), new Oven(4), new Table(5), new Table(6) },
             new string[][] { new string[] { "bakedDough", "bakedCheese", "bakedTomato" } },
             2.5f,
             Color.magenta);
     public static Place magic1 = new Place(
-            new Box[] { new Box(this, 0, "dough"), new Box(this, 1, "cheese"), new Box(this, 2, "tomato"), new Box(this, 3, "pepperoni") },
-            new Station[] { new Cutting(this, 0), new Cutting(this, 1), new Cutting(this, 2), new Oven(this, 3), new Oven(this, 4), new Table(this, 5), new Table(this, 6) },
+            new Ingredient[] { new Dough(), new Cheese(), new Tomato(), new Pepperoni() },
+            new Station[] { new Cutting(0), new Cutting(1), new Cutting(2), new Oven(3), new Oven(4), new Table(5), new Table(6) },
             new string[][] { new string[] { "bakedDough", "bakedCheese", "bakedTomato" }, new string[] { "bakedDough", "bakedCheese", "bakedTomato", "bakedPepperoni" } },
             3f,
             Color.magenta);
     public static Place magic2 = new Place(
-            new Box[] { new Box(this, 0, "flour"), new Box(this, 1, "egg"), new Box(this, 2, "chocolate") },
-            new Station[] { new Cutting(this, 0), new Cutting(this, 1), new Mixer(this, 2), new Mixer(this, 3), new PanP(this, 4), new PanP(this, 5), new Table(this, 6), new Table(this, 7) },
+            new Ingredient[] { new Flour(), new Egg(), new Chocolate() },
+            new Station[] { new Cutting(0), new Cutting(1), new Mixer(2), new Mixer(3), new PanP(4), new PanP(5), new Table(6), new Table(7) },
             new string[][] { new string[] { "cookedFlour", "cookedEgg" }, new string[] { "cookedFlour", "cookedEgg", "cookedChocolate" } },
             3f,
             Color.magenta);
     public static Place magic3 = new Place(
-            new Box[] { new Box(this, 0, "flour"), new Box(this, 1, "egg"), new Box(this, 2, "chocolate"), new Box(this, 3, "strawberry"), new Box(this, 4, "blueberry") },
-            new Station[] { new Cutting(this, 0), new Cutting(this, 1), new Mixer(this, 2), new Mixer(this, 3), new PanP(this, 4), new PanP(this, 5), new Table(this, 6), new Table(this, 7) },
+            new Ingredient[] { new Flour(), new Egg(), new Chocolate(), new Strawberry(), new Blueberry() },
+            new Station[] { new Cutting(0), new Cutting(1), new Mixer(2), new Mixer(3), new PanP(4), new PanP(5), new Table(6), new Table(7) },
             new string[][] { new string[] { "cookedFlour", "cookedEgg" }, new string[] { "cookedFlour", "cookedEgg", "cookedChocolate" }, new string[] { "cookedFlour", "cookedEgg", "cookedStrawberry" }, new string[] { "cookedFlour", "cookedEgg", "cookedBlueberry" } },
             3.5f,
             Color.magenta);
     public static Place martian0 = new Place(
-            new Box[] { new Box(this, 0, "flour"), new Box(this, 1, "egg"), new Box(this, 2, "honey"), new Box(this, 3, "chocolate"), new Box(this, 4, "carrot") },
-            new Station[] { new Cutting(this, 0), new Cutting(this, 1), new Mixer(this, 2), new Mixer(this, 3), new OvenC(this, 4), new OvenC(this, 5), new Table(this, 6), new Table(this, 7) },
+            new Ingredient[] { new Flour(), new Egg(), new Honey(), new Chocolate(), new Carrot() },
+            new Station[] { new Cutting(0), new Cutting(1), new Mixer(2), new Mixer(3), new OvenC(4), new OvenC(5), new Table(6), new Table(7) },
             new string[][] { new string[] { "bakedFlour", "bakedEgg", "bakedHoney" }, new string[] { "bakedFlour", "bakedEgg", "bakedHoney", "bakedChocolate" }, new string[] { "bakedFlour", "bakedEgg", "bakedHoney", "bakedCarrot" } },
             4f,
             Color.red);
     public static Place kevel0 = new Place(
-            new Box[] { new Box(this, 0, "flour"), new Box(this, 1, "fish"), new Box(this, 2, "carrot"), new Box(this, 3, "beef"), new Box(this, 4, "shrimp") },
-            new Station[] { new Cutting(this, 0), new Cutting(this, 1), new Mixer(this, 2), new Mixer(this, 3), new Steamer(this, 4), new Steamer(this, 5), new Table(this, 6), new Table(this, 7) },
-            new string[][] { new string[] { "steamedFish" }, new string[] { "steamedFlour", "steamedBeef" }, new string[] { "steamedFlour", "steamedCarrot" }, new string[] { "steamedFlour", "steamedShrimp" } },
+            new Ingredient[] { new Flour(), new Fish(), new Carrot(), new Meat(), new Prawn() },
+            new Station[] { new Cutting(0), new Cutting(1), new Mixer(2), new Mixer(3), new Steamer(4), new Steamer(5), new Table(6), new Table(7) },
+            new string[][] { new string[] { "steamedFish" }, new string[] { "steamedFlour", "steamedMeat" }, new string[] { "steamedFlour", "steamedCarrot" }, new string[] { "steamedFlour", "steamedPrawn" } },
             2.5f,
             Color.gray);
     public static Place[] places = new Place[] { sushi0, sushi1, sky0, sky1, sky2, rapids0, mines0, mines1, magic0, magic1, magic2, magic3, martian0, kevel0 };
-    */
 }

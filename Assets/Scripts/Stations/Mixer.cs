@@ -8,7 +8,7 @@ using KModkit;
 using Rnd = UnityEngine.Random;
 
 public class Mixer : Station {
-    public Mixer(Overcooked module, int number) { _module = module; _number = number; }
+    public Mixer(int number) { _number = number; }
     private int _number;
     string[] unmixed = { "flour", "egg", "cutChocolate", "cutBlueberry", "cutStrawberry", "cutHoney", "cutCarrot", "cutShrimp", "cutBeef" };
     string[] mixed = { "mixedFlour", "mixedEgg", "mixedChocolate", "mixedBlueberry", "mixedStrawberry", "mixedHoney", "mixedCarrot", "mixedShrimp", "mixedBeef" };
@@ -19,7 +19,7 @@ public class Mixer : Station {
     private int burning = 0;
     public override void startup() {
         updateText();
-        _module.stations[_number].transform.Find("stationImage").transform.GetComponent<MeshRenderer>().material = _module.stationMaterials[Image];
+        _module.stationSelectables[_number].transform.Find("stationImage").transform.GetComponent<MeshRenderer>().material = _module.stationMaterials[Image];
         if(_module.colorblindtime) {
             _module.colorblindTexts[_number].transform.GetComponent<TextMesh>().text = Color;
         }
@@ -32,7 +32,7 @@ public class Mixer : Station {
     }
     public void updateText() {
         //_module.stations[_number].transform.Find("stationText").transform.GetComponent<TextMesh>().text = string.Join(" ", slot);
-        Transform foodIcon = _module.stations[_number].transform.Find("FoodIcons").transform;
+        Transform foodIcon = _module.stationSelectables[_number].transform.Find("FoodIcons").transform;
         MeshRenderer[] foodIcons = new MeshRenderer[] { foodIcon.Find("One").transform.Find("ingredientImage (0)").transform.GetComponent<MeshRenderer>(), foodIcon.Find("Two").transform.Find("ingredientImage (0)").transform.GetComponent<MeshRenderer>(), foodIcon.Find("Two").transform.Find("ingredientImage (1)").transform.GetComponent<MeshRenderer>(), foodIcon.Find("Three").transform.Find("ingredientImage (0)").transform.GetComponent<MeshRenderer>(), foodIcon.Find("Three").transform.Find("ingredientImage (1)").transform.GetComponent<MeshRenderer>(), foodIcon.Find("Three").transform.Find("ingredientImage (2)").transform.GetComponent<MeshRenderer>(), foodIcon.Find("Four").transform.Find("ingredientImage (0)").transform.GetComponent<MeshRenderer>(), foodIcon.Find("Four").transform.Find("ingredientImage (1)").transform.GetComponent<MeshRenderer>(), foodIcon.Find("Four").transform.Find("ingredientImage (2)").transform.GetComponent<MeshRenderer>(), foodIcon.Find("Four").transform.Find("ingredientImage (3)").transform.GetComponent<MeshRenderer>() };
         foreach(MeshRenderer i in foodIcons) {
             i.enabled = false;
@@ -128,20 +128,20 @@ public class Mixer : Station {
             }
             updateText();
             burning = 1;
-            _module.Beep(_module.stations[_number]);
+            _module.Beep(_module.stationSelectables[_number]);
         }
         if(timer >= (10 + burning)) {
             burning++;
-            _module.Beep(_module.stations[_number]);
+            _module.Beep(_module.stationSelectables[_number]);
         }
         if((timer >= 15 && !_module.TPStrikeTimer) || (timer >= 25 && _module.TPStrikeTimer)) {
             burning = 100;
             _module.Strike($"{slot.arrayToString()} broke the mixer.");
         }
-        MeshRenderer currentMesh = _module.stations[_number].transform.Find("progressBar").transform.GetComponent<MeshRenderer>();
+        MeshRenderer currentMesh = _module.stationSelectables[_number].transform.Find("progressBar").transform.GetComponent<MeshRenderer>();
         if(timer > 0 && timer < 10) {
             currentMesh.enabled = true;
-            _module.stations[_number].transform.Find("progressBar").transform.GetComponent<MeshRenderer>().material.SetTextureOffset("_MainTex", new Vector2(0, timer / 20));
+            _module.stationSelectables[_number].transform.Find("progressBar").transform.GetComponent<MeshRenderer>().material.SetTextureOffset("_MainTex", new Vector2(0, timer / 20));
         } else { currentMesh.enabled = false; }
     }
 }

@@ -9,6 +9,7 @@ using Rnd = UnityEngine.Random;
 
 public abstract class Ingredient {
     public abstract Spr GetImage();
+    public abstract Ingredient[] CombinableWith();
     public bool cut;
     public virtual bool IsCuttable() => false;
     public bool mixed;
@@ -23,7 +24,8 @@ public abstract class Ingredient {
     public virtual bool IsFryable() => false;
     public bool boiled;
     public virtual bool IsBoilable() => false;
-    public bool prepared { get { return cooked || baked || steamed || fried || boiled; } }
+    public bool Prepared { get { return cooked || baked || steamed || fried || boiled; } }
+    public bool Unprepared { get { return !(cut || mixed || cooked || baked || steamed || fried || boiled); } }
 }
 
 public class Flour : Ingredient {
@@ -34,15 +36,23 @@ public class Flour : Ingredient {
         if(mixed) return Spr.Texture2D_mixedFlour;
         return Spr.Texture2D_Flour_Icon;
     }
-    public override bool IsMixable() => !mixed && !prepared;
-    public override bool IsCookable() => mixed && !prepared;
-    public override bool IsBakeable() => mixed && !prepared;
-    public override bool IsSteamable() => mixed && !prepared;
+    public override Ingredient[] CombinableWith()
+    {
+        throw new NotImplementedException();
+    }
+    public override bool IsMixable() => !mixed && !Prepared;
+    public override bool IsCookable() => mixed && !Prepared;
+    public override bool IsBakeable() => mixed && !Prepared;
+    public override bool IsSteamable() => mixed && !Prepared;
 }
 
 public class Seaweed : Ingredient {
     public override Spr GetImage() {
         return Spr.Texture2D_Seaweed_Icon;
+    }
+    public override Ingredient[] CombinableWith()
+    {
+        throw new NotImplementedException();
     }
 }
 
@@ -55,9 +65,13 @@ public class Fish : Ingredient
         if (cut) return Spr.Texture2D_cutFish;
         return Spr.Texture2D_Fish_Icon;
     }
-    public override bool IsCuttable() => !cut && !prepared;
-    public override bool IsCookable() => cut && !prepared;
-    public override bool IsSteamable() => cut && !prepared;
+    public override Ingredient[] CombinableWith()
+    {
+        throw new NotImplementedException();
+    }
+    public override bool IsCuttable() => !cut && !Prepared;
+    public override bool IsCookable() => cut && !Prepared;
+    public override bool IsSteamable() => cut && !Prepared;
 }
 
 public class Prawn : Ingredient
@@ -70,10 +84,28 @@ public class Prawn : Ingredient
         if (mixed) return Spr.Texture2D_mixedPrawn;
         return Spr.Texture2D_prawn_Icon;
     }
-    public override bool IsCuttable() => !cut && !mixed && !prepared;
-    public override bool IsMixable() => !cut && !mixed && !prepared;
-    public override bool IsCookable() => cut && !mixed && !prepared;
-    public override bool IsSteamable() => !cut && mixed && !prepared;
+    public override Ingredient[] CombinableWith()
+    {
+        throw new NotImplementedException();
+    }
+    public override bool IsCuttable() => !cut && !mixed && !Prepared;
+    public override bool IsMixable() => !cut && !mixed && !Prepared;
+    public override bool IsCookable() => cut && !mixed && !Prepared;
+    public override bool IsSteamable() => !cut && mixed && !Prepared;
+}
+
+public class Cucumber : Ingredient
+{
+    public override Spr GetImage()
+    {
+        if (cut) return Spr.Texture2D_cutCucumber;
+        return Spr.Texture2D_Cucumber_Icon;
+    }
+    public override Ingredient[] CombinableWith()
+    {
+        throw new NotImplementedException();
+    }
+    public override bool IsCuttable() => !cut;
 }
 
 public class Rice : Ingredient
@@ -83,7 +115,11 @@ public class Rice : Ingredient
         if (boiled) return Spr.Texture2D_cookedRice;
         return Spr.Texture2D_Rice_Icon;
     }
-    public override bool IsBoilable() => !prepared;
+    public override Ingredient[] CombinableWith()
+    {
+        throw new NotImplementedException();
+    }
+    public override bool IsBoilable() => !Prepared;
 }
 
 public class Pasta : Ingredient
@@ -93,7 +129,11 @@ public class Pasta : Ingredient
         if (boiled) return Spr.Texture2D_cookedPasta;
         return Spr.Texture2D_pasta_Icon;
     }
-    public override bool IsBoilable() => !prepared;
+    public override Ingredient[] CombinableWith()
+    {
+        throw new NotImplementedException();
+    }
+    public override bool IsBoilable() => !Prepared;
 }
 
 public class Mushroom : Ingredient
@@ -104,8 +144,12 @@ public class Mushroom : Ingredient
         if (cut) return Spr.Texture2D_cutMushroom;
         return Spr.Texture2D_Mushroom_Icon;
     }
-    public override bool IsCookable() => cut && !prepared;
-    public override bool IsCuttable() => !cut && !prepared;
+    public override Ingredient[] CombinableWith()
+    {
+        throw new NotImplementedException();
+    }
+    public override bool IsCookable() => cut && !Prepared;
+    public override bool IsCuttable() => !cut && !Prepared;
 }
 
 public class Meat : Ingredient
@@ -118,10 +162,14 @@ public class Meat : Ingredient
         if (mixed) return Spr.Texture2D_mixedMeat;
         return Spr.Texture2D_Meat_Icon;
     }
-    public override bool IsCuttable() => !cut && !mixed && !prepared;
-    public override bool IsMixable() => !cut && !mixed && !prepared;
-    public override bool IsCookable() => cut && !mixed && !prepared;
-    public override bool IsSteamable() => !cut && mixed && !prepared;
+    public override Ingredient[] CombinableWith()
+    {
+        throw new NotImplementedException();
+    }
+    public override bool IsCuttable() => !cut && !mixed && !Prepared;
+    public override bool IsMixable() => !cut && !mixed && !Prepared;
+    public override bool IsCookable() => cut && !mixed && !Prepared;
+    public override bool IsSteamable() => !cut && mixed && !Prepared;
 }
 
 public class Tomato : Ingredient
@@ -133,9 +181,13 @@ public class Tomato : Ingredient
         if (cut) return Spr.Texture2D_cutTomato;
         return Spr.Texture2D_Tomato_Icon;
     }
-    public override bool IsCookable() => cut && !prepared;
-    public override bool IsBakeable() => cut && !prepared;
-    public override bool IsCuttable() => !cut && !prepared;
+    public override Ingredient[] CombinableWith()
+    {
+        throw new NotImplementedException();
+    }
+    public override bool IsCookable() => cut && !Prepared;
+    public override bool IsBakeable() => cut && !Prepared;
+    public override bool IsCuttable() => !cut && !Prepared;
 }
 
 public class Lettuce : Ingredient
@@ -145,6 +197,10 @@ public class Lettuce : Ingredient
         if (cut) return Spr.Texture2D_cutLettuce;
         return Spr.Texture2D_Lettuce_Icon;
     }
+    public override Ingredient[] CombinableWith()
+    {
+        throw new NotImplementedException();
+    }
     public override bool IsCuttable() => !cut;
 }
 
@@ -153,6 +209,10 @@ public class Tortilla : Ingredient
     public override Spr GetImage()
     {
         return Spr.Texture2D_Tortilla_Icon;
+    }
+    public override Ingredient[] CombinableWith()
+    {
+        throw new NotImplementedException();
     }
 }
 
@@ -164,8 +224,12 @@ public class Potato : Ingredient
         if (cut) return Spr.Texture2D_cutPotato;
         return Spr.Texture2D_Potato_Icon;
     }
-    public override bool IsFryable() => cut && !prepared;
-    public override bool IsCuttable() => !cut && !prepared;
+    public override Ingredient[] CombinableWith()
+    {
+        throw new NotImplementedException();
+    }
+    public override bool IsFryable() => cut && !Prepared;
+    public override bool IsCuttable() => !cut && !Prepared;
 }
 
 public class Chicken : Ingredient
@@ -178,10 +242,14 @@ public class Chicken : Ingredient
         if (cut) return Spr.Texture2D_cutChicken;
         return Spr.Texture2D_Chicken_Icon;
     }
-    public override bool IsFryable() => cut && !prepared;
-    public override bool IsBakeable() => cut && !prepared;
-    public override bool IsCookable() => cut && !prepared;
-    public override bool IsCuttable() => !cut && !prepared;
+    public override Ingredient[] CombinableWith()
+    {
+        throw new NotImplementedException();
+    }
+    public override bool IsFryable() => cut && !Prepared;
+    public override bool IsBakeable() => cut && !Prepared;
+    public override bool IsCookable() => cut && !Prepared;
+    public override bool IsCuttable() => !cut && !Prepared;
 }
 
 public class Bun : Ingredient
@@ -189,6 +257,10 @@ public class Bun : Ingredient
     public override Spr GetImage()
     {
         return Spr.Texture2D_Bun_Icon;
+    }
+    public override Ingredient[] CombinableWith()
+    {
+        throw new NotImplementedException();
     }
 }
 
@@ -200,8 +272,12 @@ public class Cheese : Ingredient
         if (cut) return Spr.Texture2D_cutCheese;
         return Spr.Texture2D_Cheese_Icon;
     }
-    public override bool IsBakeable() => cut && !prepared;
-    public override bool IsCuttable() => !cut && !prepared;
+    public override Ingredient[] CombinableWith()
+    {
+        throw new NotImplementedException();
+    }
+    public override bool IsBakeable() => cut && !Prepared;
+    public override bool IsCuttable() => !cut && !Prepared;
 }
 
 public class Dough : Ingredient
@@ -212,8 +288,12 @@ public class Dough : Ingredient
         if (cut) return Spr.Texture2D_cutDough;
         return Spr.Texture2D_Dough_Icon;
     }
-    public override bool IsBakeable() => cut && !prepared;
-    public override bool IsCuttable() => !cut && !prepared;
+    public override Ingredient[] CombinableWith()
+    {
+        throw new NotImplementedException();
+    }
+    public override bool IsBakeable() => cut && !Prepared;
+    public override bool IsCuttable() => !cut && !Prepared;
 }
 
 public class Pepperoni : Ingredient
@@ -224,8 +304,12 @@ public class Pepperoni : Ingredient
         if (cut) return Spr.Texture2D_cutPepperoni;
         return Spr.Texture2D_Pepperoni_Icon;
     }
-    public override bool IsBakeable() => cut && !prepared;
-    public override bool IsCuttable() => !cut && !prepared;
+    public override Ingredient[] CombinableWith()
+    {
+        throw new NotImplementedException();
+    }
+    public override bool IsBakeable() => cut && !Prepared;
+    public override bool IsCuttable() => !cut && !Prepared;
 }
 
 public class Egg : Ingredient
@@ -237,9 +321,13 @@ public class Egg : Ingredient
         if (mixed) return Spr.Texture2D_mixedEgg;
         return Spr.Texture2D_egg_Icon;
     }
-    public override bool IsBakeable() => mixed && !prepared;
-    public override bool IsCookable() => mixed && !prepared;
-    public override bool IsMixable() => !mixed && !prepared;
+    public override Ingredient[] CombinableWith()
+    {
+        throw new NotImplementedException();
+    }
+    public override bool IsBakeable() => mixed && !Prepared;
+    public override bool IsCookable() => mixed && !Prepared;
+    public override bool IsMixable() => !mixed && !Prepared;
 }
 
 public class Chocolate : Ingredient
@@ -252,10 +340,14 @@ public class Chocolate : Ingredient
         if (cut) return Spr.Texture2D_cutChocolate;
         return Spr.Texture2D_chocolate_Icon;
     }
-    public override bool IsBakeable() => mixed && !prepared;
-    public override bool IsCookable() => mixed && !prepared;
-    public override bool IsMixable() => cut && !mixed && !prepared;
-    public override bool IsCuttable() => !cut && !mixed && !prepared;
+    public override Ingredient[] CombinableWith()
+    {
+        throw new NotImplementedException();
+    }
+    public override bool IsBakeable() => mixed && !Prepared;
+    public override bool IsCookable() => mixed && !Prepared;
+    public override bool IsMixable() => cut && !mixed && !Prepared;
+    public override bool IsCuttable() => !cut && !mixed && !Prepared;
 }
 
 public class Blueberry : Ingredient
@@ -267,9 +359,13 @@ public class Blueberry : Ingredient
         if (cut) return Spr.Texture2D_cutBlueberry;
         return Spr.Texture2D_Blueberry_Icon;
     }
-    public override bool IsCookable() => mixed && !prepared;
-    public override bool IsMixable() => cut && !mixed && !prepared;
-    public override bool IsCuttable() => !cut && !mixed && !prepared;
+    public override Ingredient[] CombinableWith()
+    {
+        throw new NotImplementedException();
+    }
+    public override bool IsCookable() => mixed && !Prepared;
+    public override bool IsMixable() => cut && !mixed && !Prepared;
+    public override bool IsCuttable() => !cut && !mixed && !Prepared;
 }
 
 public class Strawberry : Ingredient
@@ -281,9 +377,13 @@ public class Strawberry : Ingredient
         if (cut) return Spr.Texture2D_cutStrawberry;
         return Spr.Texture2D_Strawberry_Icon;
     }
-    public override bool IsCookable() => mixed && !prepared;
-    public override bool IsMixable() => cut && !mixed && !prepared;
-    public override bool IsCuttable() => !cut && !mixed && !prepared;
+    public override Ingredient[] CombinableWith()
+    {
+        throw new NotImplementedException();
+    }
+    public override bool IsCookable() => mixed && !Prepared;
+    public override bool IsMixable() => cut && !mixed && !Prepared;
+    public override bool IsCuttable() => !cut && !mixed && !Prepared;
 }
 
 public class Honey : Ingredient
@@ -295,22 +395,31 @@ public class Honey : Ingredient
         if (cut) return Spr.Texture2D_cutHoney;
         return Spr.Texture2D_honeycomb_Icon;
     }
-    public override bool IsBakeable() => mixed && !prepared;
-    public override bool IsMixable() => cut && !mixed && !prepared;
-    public override bool IsCuttable() => !cut && !mixed && !prepared;
+    public override Ingredient[] CombinableWith()
+    {
+        throw new NotImplementedException();
+    }
+    public override bool IsBakeable() => mixed && !Prepared;
+    public override bool IsMixable() => cut && !mixed && !Prepared;
+    public override bool IsCuttable() => !cut && !mixed && !Prepared;
 }
 
 public class Carrot : Ingredient
 {
     public override Spr GetImage()
     {
-        if (baked) return Spr.Texture2D_bakedHoney;
+        if (baked) return Spr.Texture2D_bakedCarrot;
         if (steamed) return Spr.Texture2D_steamedCarrot;
-        if (mixed) return Spr.Texture2D_mixedHoney;
-        if (cut) return Spr.Texture2D_cutHoney;
+        if (mixed) return Spr.Texture2D_mixedCarrot;
+        if (cut) return Spr.Texture2D_cutCarrot;
         return Spr.Texture2D_Carrot_Icon;
     }
-    public override bool IsBakeable() => mixed && !prepared;
-    public override bool IsMixable() => cut && !mixed && !prepared;
-    public override bool IsCuttable() => !cut && !mixed && !prepared;
+    public override Ingredient[] CombinableWith()
+    {
+        throw new NotImplementedException();
+    }
+    public override bool IsBakeable() => mixed && !Prepared;
+    public override bool IsSteamable() => mixed && !Prepared;
+    public override bool IsMixable() => cut && !mixed && !Prepared;
+    public override bool IsCuttable() => !cut && !mixed && !Prepared;
 }

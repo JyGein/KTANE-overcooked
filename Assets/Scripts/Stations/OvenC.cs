@@ -8,7 +8,7 @@ using KModkit;
 using Rnd = UnityEngine.Random;
 
 public class OvenC : Station {
-    public OvenC(Overcooked module, int number) { _module = module; _number = number; }
+    public OvenC(int number) { _number = number; }
     private int _number;
     string[] uncooked = { "mixedFlour", "mixedEgg", "mixedChocolate", "mixedHoney", "mixedCarrot" };
     string[] cooked = { "bakedFlour", "bakedEgg", "bakedChocolate", "bakedHoney", "bakedCarrot" };
@@ -19,7 +19,7 @@ public class OvenC : Station {
     private int burning = 0;
     public override void startup() {
         updateText();
-        _module.stations[_number].transform.Find("stationImage").transform.GetComponent<MeshRenderer>().material = _module.stationMaterials[Image];
+        _module.stationSelectables[_number].transform.Find("stationImage").transform.GetComponent<MeshRenderer>().material = _module.stationMaterials[Image];
         if(_module.colorblindtime) {
             _module.colorblindTexts[_number].transform.GetComponent<TextMesh>().text = Color;
         }
@@ -32,7 +32,7 @@ public class OvenC : Station {
     }
     public void updateText() {
         //_module.stations[_number].transform.Find("stationText").transform.GetComponent<TextMesh>().text = string.Join(" ", slot);
-        Transform foodIcon = _module.stations[_number].transform.Find("FoodIcons").transform;
+        Transform foodIcon = _module.stationSelectables[_number].transform.Find("FoodIcons").transform;
         MeshRenderer[] foodIcons = new MeshRenderer[] { foodIcon.Find("One").transform.Find("ingredientImage (0)").transform.GetComponent<MeshRenderer>(), foodIcon.Find("Two").transform.Find("ingredientImage (0)").transform.GetComponent<MeshRenderer>(), foodIcon.Find("Two").transform.Find("ingredientImage (1)").transform.GetComponent<MeshRenderer>(), foodIcon.Find("Three").transform.Find("ingredientImage (0)").transform.GetComponent<MeshRenderer>(), foodIcon.Find("Three").transform.Find("ingredientImage (1)").transform.GetComponent<MeshRenderer>(), foodIcon.Find("Three").transform.Find("ingredientImage (2)").transform.GetComponent<MeshRenderer>(), foodIcon.Find("Four").transform.Find("ingredientImage (0)").transform.GetComponent<MeshRenderer>(), foodIcon.Find("Four").transform.Find("ingredientImage (1)").transform.GetComponent<MeshRenderer>(), foodIcon.Find("Four").transform.Find("ingredientImage (2)").transform.GetComponent<MeshRenderer>(), foodIcon.Find("Four").transform.Find("ingredientImage (3)").transform.GetComponent<MeshRenderer>() };
         foreach(MeshRenderer i in foodIcons) {
             i.enabled = false;
@@ -120,20 +120,20 @@ public class OvenC : Station {
             }
             updateText();
             burning = 1;
-            _module.Beep(_module.stations[_number]);
+            _module.Beep(_module.stationSelectables[_number]);
         }
         if(timer >= (15 + burning)) {
             burning++;
-            _module.Beep(_module.stations[_number]);
+            _module.Beep(_module.stationSelectables[_number]);
         }
         if((timer >= 20 && !_module.TPStrikeTimer) || (timer >= 30 && _module.TPStrikeTimer)) {
             burning = 100;
             _module.Strike($"{slot.arrayToString()} burned in the Oven.");
         }
-        MeshRenderer currentMesh = _module.stations[_number].transform.Find("progressBar").transform.GetComponent<MeshRenderer>();
+        MeshRenderer currentMesh = _module.stationSelectables[_number].transform.Find("progressBar").transform.GetComponent<MeshRenderer>();
         if(timer > 0 && timer < 15) {
             currentMesh.enabled = true;
-            _module.stations[_number].transform.Find("progressBar").transform.GetComponent<MeshRenderer>().material.SetTextureOffset("_MainTex", new Vector2(0, timer / 30));
+            _module.stationSelectables[_number].transform.Find("progressBar").transform.GetComponent<MeshRenderer>().material.SetTextureOffset("_MainTex", new Vector2(0, timer / 30));
         } else { currentMesh.enabled = false; }
     }
 }

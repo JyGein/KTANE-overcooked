@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,9 +7,30 @@ using System.Text.RegularExpressions;
 using UnityEngine;
 using KModkit;
 using Rnd = UnityEngine.Random;
+using System.IO;
 
 
-public static class Util {
+public static class Util
+{
+    public static T DeepCopy<T>(T obj) where T : class
+    {
+        MemoryStream memoryStream = new MemoryStream();
+        StreamWriter streamWriter = new StreamWriter(memoryStream, null, -1);
+        JSONSettings.serializer.Serialize(streamWriter, obj);
+        streamWriter.Flush();
+        memoryStream.Position = 0L;
+        StreamReader reader = new StreamReader(memoryStream, null, true, -1);
+        return (T)JSONSettings.serializer.Deserialize(reader, obj.GetType());
+    }
+    public static class JSONSettings
+    {
+        public static readonly JsonSerializer serializer = JsonSerializer.Create(new JsonSerializerSettings
+        {
+            ObjectCreationHandling = ObjectCreationHandling.Replace,
+            TypeNameHandling = TypeNameHandling.Auto
+        });
+    }
+
     public static int findInArrayArray(this string[][] uncooked, string[] slot) {
         int temp2 = -1;
         int count = 0;
